@@ -47,6 +47,10 @@ export interface Bet {
   timestamp: number;
 }
 
+// Betting types
+export type BetMode = 'manual' | 'auto';
+export type RiskLevel = 'low' | 'medium' | 'high';
+
 // Plinko types
 export type PlinkoRiskLevel = 'low' | 'medium' | 'high';
 
