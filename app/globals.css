@@ -1,26 +1,117 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navbar-height: 80px;
+  --sidebar-width: 320px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'TT-Interphases-Pro', system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #0c1019;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #12141c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2d3a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d4150;
+}
+
+/* Chat scrollbar */
+.scrollbar-chat::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-chat::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-chat::-webkit-scrollbar-thumb {
+  background: #2a2d3a;
+  border-radius: 2px;
+}
+
+/* Font sizes matching duel.com */
+.text-h-xs { font-size: 14px; line-height: 20px; font-weight: 700; }
+.text-h-sm { font-size: 16px; line-height: 23px; font-weight: 700; }
+.text-h-md { font-size: 20px; line-height: 27px; font-weight: 700; }
+.text-h-lg { font-size: 24px; line-height: 32px; font-weight: 700; }
+.text-h-xl { font-size: 32px; line-height: 43px; font-weight: 700; }
+.text-h-xxl { font-size: 40px; line-height: 50px; font-weight: 700; }
+
+.text-b-xs { font-size: 10px; line-height: 16px; }
+.text-b-sm { font-size: 12px; line-height: 18px; }
+.text-b-md { font-size: 14px; line-height: 21px; }
+.text-b-lg { font-size: 16px; line-height: 24px; }
+.text-b-xl { font-size: 20px; line-height: 26px; }
+
+/* Responsive font sizes (md breakpoint) */
+@media (min-width: 768px) {
+  .md\:text-h-xs { font-size: 14px; line-height: 20px; font-weight: 700; }
+  .md\:text-h-sm { font-size: 16px; line-height: 23px; font-weight: 700; }
+  .md\:text-h-md { font-size: 20px; line-height: 27px; font-weight: 700; }
+  .md\:text-h-lg { font-size: 24px; line-height: 32px; font-weight: 700; }
+  .md\:text-h-xl { font-size: 32px; line-height: 43px; font-weight: 700; }
+
+  .md\:text-b-sm { font-size: 12px; line-height: 18px; }
+  .md\:text-b-md { font-size: 14px; line-height: 21px; }
+  .md\:text-b-lg { font-size: 16px; line-height: 24px; }
+  .md\:text-b-xl { font-size: 20px; line-height: 26px; }
+}
+
+/* Plinko bucket styles */
+.plinko-bucket-hole {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 50% 50%;
+}
+
+.plinko-bucket-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Plinko result history exit animation */
+.plinko-result-item {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.25s ease-out, transform 0.4s ease-out;
+}
+
+.plinko-result-exiting {
+  opacity: 0 !important;
+  transform: translateX(-50px) !important;
 }
