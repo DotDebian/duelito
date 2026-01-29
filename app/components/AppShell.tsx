@@ -18,7 +18,7 @@ export function AppShell({ children }: AppShellProps) {
           <Sidebar />
 
           <MainContent>
-            <div>
+            <div className="flex flex-col p-16 sm:p-32">
               {children}
             </div>
 

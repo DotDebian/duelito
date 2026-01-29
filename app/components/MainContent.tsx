@@ -13,7 +13,7 @@ export function MainContent({ children }: MainContentProps) {
   return (
     <div className="flex min-h-[calc(100vh-var(--navbar-height)-theme(space.16))] flex-grow flex-col">
       <main className="flex-grow">
-      <div>
+        <div>
           {children}
         </div>
       </main>
