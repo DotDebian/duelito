@@ -7,3 +7,6 @@ export { GameCard } from './GameCard';
 export { Footer } from './Footer';
 export { LiveBetsFeed } from './LiveBetsFeed';
 export { GameLayout } from './GameLayout';
+
+// Betting components
+export * from './betting';
