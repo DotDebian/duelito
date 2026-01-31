@@ -5,6 +5,15 @@ import type { Card, Hand, HandResult } from '@/app/blackjack/types';
 export async function POST(request: Request) {
   const { dealerHand, playerHands, activeHandIndex } = await request.json();
 
+  console.log('=== STAND / DEALER TURN ===');
+  console.log('Player hands:', playerHands.map((h: Hand) => ({
+    cards: h.cards.map((c: Card) => `${c.rank}${c.suit}`).join(', '),
+    value: getBestHandValue(h.cards),
+    hasBlackjack: h.hasBlackjack,
+    isBusted: h.isBusted,
+  })));
+  console.log('Dealer hand before reveal:', dealerHand.cards.map((c: Card) => c.faceUp ? `${c.rank}${c.suit}` : '??').join(', '));
+
   // Mark current hand as stood
   const updatedPlayerHands: Hand[] = playerHands.map((hand: Hand, index: number) => {
     if (index === activeHandIndex) {
@@ -33,29 +42,51 @@ export async function POST(request: Request) {
     cards: dealerHand.cards.map((c: Card) => ({ ...c, faceUp: true })),
   };
 
-  // Check for dealer blackjack
-  if (isBlackjack(updatedDealerHand.cards)) {
+  console.log('Dealer hand revealed:', updatedDealerHand.cards.map((c: Card) => `${c.rank}${c.suit}`).join(', '));
+  console.log('Dealer initial value:', getBestHandValue(updatedDealerHand.cards));
+
+  // Check if all player hands are busted - if so, dealer doesn't need to play
+  const allPlayerHandsBusted = updatedPlayerHands.every((hand: Hand) => hand.isBusted);
+
+  if (allPlayerHandsBusted) {
+    console.log('>>> All player hands BUSTED, dealer does NOT draw');
+  } else if (isBlackjack(updatedDealerHand.cards)) {
+    // Check for dealer blackjack
+    console.log('>>> Dealer has BLACKJACK!');
     updatedDealerHand = { ...updatedDealerHand, hasBlackjack: true };
   } else {
-    // Dealer draws to 17
-    const deck = shuffleDeck(createDeck());
-    let cardIndex = 0;
+    // Check if any player hand has blackjack - if so, dealer doesn't draw
+    const playerHasBlackjack = updatedPlayerHands.some((hand: Hand) => hand.hasBlackjack);
+    console.log('Player has blackjack:', playerHasBlackjack);
 
-    while (getBestHandValue(updatedDealerHand.cards) < 17) {
-      const newCard: Card = {
-        ...deck[cardIndex],
-        id: `dealer-card-${Date.now()}-${cardIndex}`,
-        faceUp: true,
-      };
-      updatedDealerHand = {
-        ...updatedDealerHand,
-        cards: [...updatedDealerHand.cards, newCard],
-      };
-      cardIndex++;
-    }
+    if (!playerHasBlackjack) {
+      // Dealer draws to 17 only if player doesn't have blackjack
+      console.log('Dealer draws to 17...');
+      const deck = shuffleDeck(createDeck());
+      let cardIndex = 0;
 
-    if (isBusted(updatedDealerHand.cards)) {
-      updatedDealerHand = { ...updatedDealerHand, isBusted: true };
+      while (getBestHandValue(updatedDealerHand.cards) < 17) {
+        const newCard: Card = {
+          ...deck[cardIndex],
+          id: `dealer-card-${Date.now()}-${cardIndex}`,
+          faceUp: true,
+        };
+        console.log(`  Dealer draws: ${newCard.rank}${newCard.suit}`);
+        updatedDealerHand = {
+          ...updatedDealerHand,
+          cards: [...updatedDealerHand.cards, newCard],
+        };
+        cardIndex++;
+      }
+
+      console.log('Dealer final value:', getBestHandValue(updatedDealerHand.cards));
+
+      if (isBusted(updatedDealerHand.cards)) {
+        console.log('>>> Dealer BUSTED!');
+        updatedDealerHand = { ...updatedDealerHand, isBusted: true };
+      }
+    } else {
+      console.log('>>> Player has blackjack, dealer does NOT draw');
     }
   }
 
@@ -98,6 +129,14 @@ export async function POST(request: Request) {
 
   // Determine overall result (simplified: use first hand result)
   const overallResult = resultsPerHand[0];
+
+  console.log('--- RESULTS ---');
+  console.log('Dealer final:', updatedDealerHand.cards.map((c: Card) => `${c.rank}${c.suit}`).join(', '), '=', dealerValue);
+  console.log('Dealer blackjack:', updatedDealerHand.hasBlackjack);
+  console.log('Dealer busted:', dealerBusted);
+  console.log('Results per hand:', resultsPerHand);
+  console.log('Total payout:', totalPayout);
+  console.log('=========================\n');
 
   return NextResponse.json({
     dealerHand: updatedDealerHand,

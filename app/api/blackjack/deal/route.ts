@@ -22,6 +22,12 @@ export async function POST(request: Request) {
   const playerHasBlackjack = isBlackjack(playerCards);
   const dealerShowsAce = dealerCards[0].rank === 'A';
 
+  console.log('=== DEAL ===');
+  console.log('Player cards:', playerCards.map(c => `${c.rank}${c.suit}`).join(', '));
+  console.log('Dealer cards:', dealerCards.map(c => c.faceUp ? `${c.rank}${c.suit}` : '??').join(', '));
+  console.log('Player has blackjack:', playerHasBlackjack);
+  console.log('Dealer shows Ace:', dealerShowsAce);
+
   const dealerHand: Hand = {
     cards: dealerCards,
     bet: 0,
@@ -51,6 +57,9 @@ export async function POST(request: Request) {
   } else {
     phase = 'player_turn';
   }
+
+  console.log('Initial phase:', phase);
+  console.log('================\n');
 
   return NextResponse.json({
     gameId: crypto.randomUUID(),

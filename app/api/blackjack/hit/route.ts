@@ -9,6 +9,9 @@ export async function POST(request: Request) {
   const deck = shuffleDeck(createDeck());
   const newCard: Card = { ...deck[0], id: `card-${Date.now()}`, faceUp: true };
 
+  console.log('=== HIT ===');
+  console.log('New card:', `${newCard.rank}${newCard.suit}`);
+
   // Add card to active hand
   const updatedHands: Hand[] = playerHands.map((hand: Hand, index: number) => {
     if (index === activeHandIndex) {
@@ -31,6 +34,9 @@ export async function POST(request: Request) {
   let phase = 'player_turn';
   let newActiveIndex = activeHandIndex;
 
+  console.log('Hand value after hit:', handValue);
+  console.log('Is busted:', currentHand.isBusted);
+
   if (currentHand.isBusted || handValue === 21) {
     // Move to next hand or dealer turn
     const nextHandIndex = updatedHands.findIndex(
@@ -43,6 +49,9 @@ export async function POST(request: Request) {
       phase = 'dealer_turn';
     }
   }
+
+  console.log('Next phase:', phase);
+  console.log('============\n');
 
   return NextResponse.json({
     playerHands: updatedHands,
