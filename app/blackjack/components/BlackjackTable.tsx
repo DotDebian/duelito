@@ -96,10 +96,14 @@ export const BlackjackTable = memo(function BlackjackTable({
           className="transition-opacity delay-150 duration-300 absolute left-1/2 top-8 aspect-[120/167] translate-y-[15%] max-h-[17vh] w-[10%]"
           style={{ transform: `translateX(-${(105 + ((105 / 3) * (dealerHand.cards.length - 1))) / 2}px)` }}
         >
-          {/* Score badge */}
+          {/* Score badge - follows visible cards with smooth transition */}
           <div
-            className="absolute z-[10] h-full w-full transition-all delay-150 duration-300 will-change-transform"
-            style={{ transform: `translate(${73 + 33 * (visibleCardCount - 1)}%, 85%)` }}
+            className="absolute z-[60] h-full w-full will-change-transform"
+            style={{
+              transform: `translate(${73 + 33 * Math.max(0, visibleCardCount - 1)}%, 85%)`,
+              opacity: visibleCardCount > 0 ? 1 : 0,
+              transition: `transform 300ms ease-out, opacity 100ms ease-out ${visibleCardCount > 0 ? '50ms' : '0ms'}`,
+            }}
           >
             <ScoreBadge cards={dealerHand.cards} result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result} showResult={showResult} />
           </div>
@@ -128,10 +132,14 @@ export const BlackjackTable = memo(function BlackjackTable({
             transform: 'translateY(220%)',
           }}
         >
-          {/* Score badge */}
+          {/* Score badge - follows visible cards with smooth transition */}
           <div
-            className="absolute z-[10] h-full w-full transition-all delay-150 duration-300 will-change-transform"
-            style={{ transform: `translate(${66 + 23 * (visibleCardCount - 1)}%, 0%)` }}
+            className="absolute z-[60] h-full w-full will-change-transform"
+            style={{
+              transform: `translate(${66 + 23 * Math.max(0, visibleCardCount - 1)}%, 0%)`,
+              opacity: visibleCardCount > 0 ? 1 : 0,
+              transition: `transform 300ms ease-out, opacity 100ms ease-out ${visibleCardCount > 0 ? '50ms' : '0ms'}`,
+            }}
           >
             <ScoreBadge cards={hand.cards} result={result} showResult={showResult && index === activeHandIndex} />
           </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect, useCallback } from 'react';
+import { useRef, useLayoutEffect, useCallback, useMemo } from 'react';
 import { GameLayout } from '@/app/components';
 import { BlackjackTable, BlackjackBottomControls } from './components';
 import { useBlackjackGame } from './hooks';
@@ -126,8 +126,31 @@ export default function BlackjackPage() {
 
   const showResult = gameState.phase === 'settled';
 
-  // Get IDs of cards currently being animated
-  const animatingCardIds = new Set(animatingCards.map(c => c.cardId));
+  // Get IDs of cards currently being animated OR about to be animated
+  // This includes cards that were just added but haven't been processed by useLayoutEffect yet
+  const animatingCardIds = useMemo(() => {
+    const ids = new Set(animatingCards.map(c => c.cardId));
+
+    const currentPlayerCards = gameState.playerHands[0]?.cards ?? [];
+    const currentDealerCards = gameState.dealerHand?.cards ?? [];
+    const prevPlayerCards = prevPlayerCardsRef.current;
+    const prevDealerCards = prevDealerCardsRef.current;
+
+    // Add IDs of newly added cards that will be animated
+    // (these cards are in gameState but not yet in animatingCards)
+    if (prevPlayerCards.length === 0 && currentPlayerCards.length >= 2 &&
+        prevDealerCards.length === 0 && currentDealerCards.length >= 2) {
+      // Initial deal - all cards will animate
+      currentPlayerCards.forEach(c => ids.add(c.id));
+      currentDealerCards.forEach(c => ids.add(c.id));
+    } else {
+      // Hit/dealer turn - only new cards will animate
+      currentPlayerCards.slice(prevPlayerCards.length).forEach(c => ids.add(c.id));
+      currentDealerCards.slice(prevDealerCards.length).forEach(c => ids.add(c.id));
+    }
+
+    return ids;
+  }, [animatingCards, gameState.playerHands, gameState.dealerHand]);
 
   return (
     <GameLayout>
