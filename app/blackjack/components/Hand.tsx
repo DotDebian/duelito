@@ -9,9 +9,10 @@ interface HandProps {
   isDealer?: boolean;
   result?: HandResult;
   showResult?: boolean;
+  hiddenCardIds?: Set<string>;
 }
 
-export const Hand = memo(function Hand({ hand, isDealer, result, showResult }: HandProps) {
+export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hiddenCardIds = new Set() }: HandProps) {
   const isWinner = showResult && (result === 'win' || result === 'blackjack');
   const isLoser = showResult && result === 'lose';
 
@@ -23,7 +24,7 @@ export const Hand = memo(function Hand({ hand, isDealer, result, showResult }: H
           ? index * 33 // Dealer cards stack horizontally
           : index * 35; // Player cards fan out horizontally
 
-        const rotation = isDealer ? 0 : (index - (hand.cards.length - 1) / 2) * 4;
+        const rotation = isDealer ? 0 : (index - (hand.cards.length - 1) / 2) * 8;
 
         return (
           <div
@@ -41,6 +42,7 @@ export const Hand = memo(function Hand({ hand, isDealer, result, showResult }: H
               isWinner={isWinner}
               isLoser={isLoser}
               delay={index * 150}
+              isHidden={hiddenCardIds.has(card.id)}
             />
           </div>
         );

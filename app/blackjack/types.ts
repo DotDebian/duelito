@@ -21,6 +21,30 @@ export interface Hand {
 export type GamePhase = 'betting' | 'dealing' | 'player_turn' | 'insurance_offer' | 'dealer_turn' | 'settled';
 export type HandResult = 'win' | 'lose' | 'push' | 'blackjack' | null;
 
+// Animation types
+export type AnimationPhase = 'queued' | 'moving' | 'flipping' | 'settled';
+
+export interface CardAnimationState {
+  cardId: string;
+  card: Card;
+  phase: AnimationPhase;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  targetHand: 'player' | 'dealer';
+  targetIndex: number;
+  shouldFlip: boolean;
+}
+
+export interface CardToAnimate {
+  card: Card;
+  targetHand: 'player' | 'dealer';
+  targetIndex: number;
+  shouldFlip: boolean;
+  delay: number;
+}
+
 export interface BlackjackGameState {
   gameId: string | null;
   phase: GamePhase;

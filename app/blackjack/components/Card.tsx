@@ -10,6 +10,7 @@ interface CardProps {
   isWinner?: boolean;
   isLoser?: boolean;
   delay?: number;
+  isHidden?: boolean;
 }
 
 const suitToImage: Record<string, string> = {
@@ -42,13 +43,16 @@ function SuitIcon({ suit, size, isRed }: SuitIconProps) {
   );
 }
 
-export const Card = memo(function Card({ card, isWinner, isLoser, delay = 0 }: CardProps) {
+export const Card = memo(function Card({ card, isWinner, isLoser, delay = 0, isHidden = false }: CardProps) {
   const isRed = isRedSuit(card.suit);
   const textColor = isRed ? 'text-red-500' : 'text-dark-900';
   const borderColor = isWinner ? 'border-green-500' : isLoser ? 'border-red-500' : 'border-light-000';
 
   return (
-    <div className="card-container aspect-[120/167] h-full">
+    <div
+      className="card-container aspect-[120/167] h-full"
+      style={{ visibility: isHidden ? 'hidden' : 'visible' }}
+    >
       <div
         data-testid="card-content"
         className="card-flipper relative h-full w-full rounded-8"

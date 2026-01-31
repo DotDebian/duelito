@@ -2,10 +2,11 @@
 
 import { memo } from 'react';
 import Image from 'next/image';
-import type { Hand as HandType, HandResult } from '../types';
+import type { Hand as HandType, HandResult, CardAnimationState } from '../types';
 import { Hand } from './Hand';
 import { ScoreBadge } from './ScoreBadge';
-import {CardBack} from "@/app/blackjack/components/CardBack";
+import { CardBack } from "@/app/blackjack/components/CardBack";
+import { Card } from './Card';
 
 interface BlackjackTableProps {
   dealerHand: HandType | null;
@@ -13,6 +14,12 @@ interface BlackjackTableProps {
   activeHandIndex: number;
   result: HandResult;
   showResult: boolean;
+  animatingCards?: CardAnimationState[];
+  animatingCardIds?: Set<string>;
+  deckRef?: React.RefObject<HTMLDivElement | null>;
+  dealerRef?: React.RefObject<HTMLDivElement | null>;
+  playerRef?: React.RefObject<HTMLDivElement | null>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export const BlackjackTable = memo(function BlackjackTable({
@@ -21,28 +28,40 @@ export const BlackjackTable = memo(function BlackjackTable({
   activeHandIndex,
   result,
   showResult,
+  animatingCards = [],
+  animatingCardIds = new Set(),
+  deckRef,
+  dealerRef,
+  playerRef,
+  containerRef,
 }: BlackjackTableProps) {
   return (
     <>
-      {/* Table background */}
-      <div className="absolute left-1/2 top-0 flex h-[75vh] w-full -translate-x-1/2 items-start justify-center">
+      {/* Top gradient overlay */}
+      <div className="absolute top-0 z-10 h-32 w-full -translate-y-32 bg-dark-800" />
+
+      {/* Table container - constrains all game elements to background size */}
+      <div
+        ref={containerRef}
+        className="absolute left-1/2 top-0 -translate-x-1/2 w-full max-w-[calc(75vh*1287/787)] aspect-[1287/787]"
+      >
+        {/* Table background */}
         <Image
           src="/images/card-table.png"
           alt="Blackjack table"
-          width={1600}
-          height={1200}
-          className="h-full w-auto object-contain object-top"
+          width={1287}
+          height={787}
+          className="absolute inset-0 h-full w-full object-contain object-top"
           draggable={false}
           priority
           unoptimized
         />
-      </div>
 
-      {/* Top gradient overlay */}
-      <div className="absolute top-0 z-10 h-32 w-full -translate-y-32 bg-dark-800" />
-
-      {/* Deck pile (dealer's cards to draw from) */}
-      <div className="relative flex rounded-8 absolute left-1/2 top-0 aspect-[120/167] translate-x-[170%] translate-y-[-50%] max-h-[17vh] w-[10%]">
+        {/* Deck pile (dealer's cards to draw from) */}
+        <div
+          ref={deckRef}
+          className="relative flex rounded-8 absolute left-1/2 top-0 aspect-[120/167] translate-x-[170%] translate-y-[-50%] max-h-[17vh] w-[10%]"
+        >
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
@@ -69,36 +88,50 @@ export const BlackjackTable = memo(function BlackjackTable({
       </div>
 
       {/* Dealer hand area */}
-      {dealerHand && (
-        <div className="transition-opacity delay-150 duration-300 absolute left-1/2 top-8 aspect-[120/167] -translate-x-1/2 translate-y-[15%] max-h-[17vh] w-[10%]">
+      {dealerHand && (() => {
+        const visibleCardCount = dealerHand.cards.filter(c => !animatingCardIds.has(c.id)).length;
+        return (
+        <div
+          ref={dealerRef}
+          className="transition-opacity delay-150 duration-300 absolute left-1/2 top-8 aspect-[120/167] translate-y-[15%] max-h-[17vh] w-[10%]"
+          style={{ transform: `translateX(-${(105 + ((105 / 3) * (dealerHand.cards.length - 1))) / 2}px)` }}
+        >
           {/* Score badge */}
           <div
             className="absolute z-[10] h-full w-full transition-all delay-150 duration-300 will-change-transform"
-            style={{ transform: 'translate(-125%, 155%)' }}
+            style={{ transform: `translate(${73 + 33 * (visibleCardCount - 1)}%, 85%)` }}
           >
             <ScoreBadge cards={dealerHand.cards} result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result} showResult={showResult} />
           </div>
 
           {/* Dealer cards */}
-          <Hand hand={dealerHand} isDealer result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result} showResult={showResult} />
+          <Hand
+            hand={dealerHand}
+            isDealer
+            result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result}
+            showResult={showResult}
+            hiddenCardIds={animatingCardIds}
+          />
         </div>
-      )}
+        );
+      })()}
 
       {/* Player hand(s) area */}
-      {playerHands.map((hand, index) => (
+      {playerHands.map((hand, index) => {
+        const visibleCardCount = hand.cards.filter(c => !animatingCardIds.has(c.id)).length;
+        return (
         <div
           key={index}
+          ref={index === 0 ? playerRef : undefined}
           className="transition-opacity delay-150 duration-300 absolute left-1/2 top-0 aspect-[120/167] -translate-x-1/2 max-h-[17vh] w-[10%]"
           style={{
-            transform: playerHands.length > 1
-              ? `translateX(${-50 + (index - (playerHands.length - 1) / 2) * 120}%) translateY(235%)`
-              : 'translateX(-50%) translateY(280%)',
+            transform: 'translateY(220%)',
           }}
         >
           {/* Score badge */}
           <div
             className="absolute z-[10] h-full w-full transition-all delay-150 duration-300 will-change-transform"
-            style={{ transform: 'translate(-125%, 0%)' }}
+            style={{ transform: `translate(${66 + 23 * (visibleCardCount - 1)}%, 0%)` }}
           >
             <ScoreBadge cards={hand.cards} result={result} showResult={showResult && index === activeHandIndex} />
           </div>
@@ -109,9 +142,38 @@ export const BlackjackTable = memo(function BlackjackTable({
           )}
 
           {/* Player cards */}
-          <Hand hand={hand} result={result} showResult={showResult} />
+          <Hand
+            hand={hand}
+            result={result}
+            showResult={showResult}
+            hiddenCardIds={animatingCardIds}
+          />
         </div>
-      ))}
+        );
+      })}
+
+        {/* Animating cards - rendered in absolute position during animation */}
+        {animatingCards.map((animCard) => {
+          const isMoving = animCard.phase === 'moving' || animCard.phase === 'flipping';
+          const targetX = isMoving ? animCard.endX : animCard.startX;
+          const targetY = isMoving ? animCard.endY : animCard.startY;
+
+          return (
+            <div
+              key={animCard.cardId}
+              className="absolute z-50 aspect-[120/167] max-h-[17vh] w-[10%] pointer-events-none"
+              style={{
+                left: 0,
+                top: 0,
+                transform: `translate(calc(${targetX}px - 50%), calc(${targetY}px - 50%))`,
+                transition: isMoving ? 'transform 400ms ease-out' : 'none',
+              }}
+            >
+              <Card card={animCard.card} />
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 });
