@@ -163,6 +163,8 @@ export default function BlackjackPage() {
           activeHandIndex={gameState.activeHandIndex}
           result={gameState.result}
           showResult={showResult}
+          betAmount={parseFloat(betAmount) || 0}
+          payout={gameState.payout}
           animatingCards={animatingCards}
           animatingCardIds={animatingCardIds}
           deckRef={deckRef}

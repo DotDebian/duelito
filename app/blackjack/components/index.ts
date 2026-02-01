@@ -2,6 +2,7 @@ export { CardBack } from './CardBack';
 export { Card } from './Card';
 export { Hand } from './Hand';
 export { ScoreBadge } from './ScoreBadge';
+export { BetIndicator } from './BetIndicator';
 export { BlackjackTable } from './BlackjackTable';
 export { BlackjackControls } from './BlackjackControls';
 export { InsuranceModal } from './InsuranceModal';

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Hand as HandType, HandResult, CardAnimationState } from '../types';
 import { Hand } from './Hand';
 import { ScoreBadge } from './ScoreBadge';
+import { BetIndicator } from './BetIndicator';
 import { CardBack } from "@/app/blackjack/components/CardBack";
 import { Card } from './Card';
 
@@ -14,6 +15,8 @@ interface BlackjackTableProps {
   activeHandIndex: number;
   result: HandResult;
   showResult: boolean;
+  betAmount: number;
+  payout: number;
   animatingCards?: CardAnimationState[];
   animatingCardIds?: Set<string>;
   deckRef?: React.RefObject<HTMLDivElement | null>;
@@ -28,6 +31,8 @@ export const BlackjackTable = memo(function BlackjackTable({
   activeHandIndex,
   result,
   showResult,
+  betAmount,
+  payout,
   animatingCards = [],
   animatingCardIds = new Set(),
   deckRef,
@@ -105,7 +110,7 @@ export const BlackjackTable = memo(function BlackjackTable({
               transition: `transform 300ms ease-out, opacity 100ms ease-out ${visibleCardCount > 0 ? '50ms' : '0ms'}`,
             }}
           >
-            <ScoreBadge cards={dealerHand.cards} result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result} showResult={showResult} />
+            <ScoreBadge cards={dealerHand.cards} result={result === 'win' || result === 'blackjack' ? 'lose' : result === 'lose' ? 'win' : result} showResult={showResult} isDealer />
           </div>
 
           {/* Dealer cards */}
@@ -136,7 +141,7 @@ export const BlackjackTable = memo(function BlackjackTable({
           <div
             className="absolute z-[60] h-full w-full will-change-transform"
             style={{
-              transform: `translate(${66 + 23 * Math.max(0, visibleCardCount - 1)}%, 0%)`,
+              transform: `translate(${67 + 23 * Math.max(0, visibleCardCount - 1)}%, 0%)`,
               opacity: visibleCardCount > 0 ? 1 : 0,
               transition: `transform 300ms ease-out, opacity 100ms ease-out ${visibleCardCount > 0 ? '50ms' : '0ms'}`,
             }}
@@ -166,6 +171,16 @@ export const BlackjackTable = memo(function BlackjackTable({
           const targetX = isMoving ? animCard.endX : animCard.startX;
           const targetY = isMoving ? animCard.endY : animCard.startY;
 
+          // Calculate rotation for player cards based on final hand size
+          const totalCards = playerHands[0]?.cards.length ?? 1;
+          const rotation = animCard.targetHand === 'player'
+            ? (animCard.targetIndex - (totalCards - 1) / 2) * 8
+            : 0;
+          // Entry: start at 0, animate to rotation. Exit: start at rotation, animate to 0
+          const targetRotation = animCard.isExit
+            ? (isMoving ? 0 : rotation)
+            : (isMoving ? rotation : 0);
+
           return (
             <div
               key={animCard.cardId}
@@ -173,14 +188,23 @@ export const BlackjackTable = memo(function BlackjackTable({
               style={{
                 left: 0,
                 top: 0,
-                transform: `translate(calc(${targetX}px - 50%), calc(${targetY}px - 50%))`,
+                transform: `translate(calc(${targetX}px - 50%), calc(${targetY}px - 50%)) rotate(${targetRotation}deg)`,
                 transition: isMoving ? 'transform 400ms ease-out' : 'none',
               }}
             >
-              <Card card={animCard.card} />
+              <Card card={animCard.card} flipDirection={animCard.targetHand === 'dealer' ? 'horizontal' : 'vertical'} />
             </div>
           );
         })}
+
+        {/* Player bet indicator */}
+        <BetIndicator
+          betAmount={betAmount}
+          payout={payout}
+          result={result}
+          showResult={showResult}
+          hasStarted={(playerHands[0]?.cards.length ?? 0) > 0}
+        />
       </div>
     </>
   );
