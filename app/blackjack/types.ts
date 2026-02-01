@@ -35,6 +35,7 @@ export interface CardAnimationState {
   targetHand: 'player' | 'dealer';
   targetIndex: number;
   shouldFlip: boolean;
+  isExit?: boolean;
 }
 
 export interface CardToAnimate {

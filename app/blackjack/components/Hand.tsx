@@ -15,6 +15,7 @@ interface HandProps {
 export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hiddenCardIds = new Set() }: HandProps) {
   const isWinner = showResult && (result === 'win' || result === 'blackjack');
   const isLoser = showResult && result === 'lose';
+  const isPush = showResult && result === 'push';
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
@@ -22,7 +23,7 @@ export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hid
         // Calculate offset for stacking
         const offset = isDealer
           ? index * 33 // Dealer cards stack horizontally
-          : index * 35; // Player cards fan out horizontally
+          : index * 36; // Player cards fan out horizontally
 
         const rotation = isDealer ? 0 : (index - (hand.cards.length - 1) / 2) * 8;
 
@@ -41,8 +42,11 @@ export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hid
               card={card}
               isWinner={isWinner}
               isLoser={isLoser}
+              isPush={isPush}
+              isDealer={isDealer}
               delay={index * 150}
               isHidden={hiddenCardIds.has(card.id)}
+              flipDirection={isDealer ? 'horizontal' : 'vertical'}
             />
           </div>
         );

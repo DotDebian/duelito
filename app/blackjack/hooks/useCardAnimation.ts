@@ -142,7 +142,7 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
       }, startDelay);
       timeoutsRef.current.push(moveTimeout);
 
-      // Start flip (if needed) - before arrival for smoother effect
+      // Start flip (if needed) - simultaneously with movement
       if (cardToAnimate.shouldFlip) {
         const flipTimeout = setTimeout(() => {
           updateCardPhase(cardId, 'flipping');
@@ -153,7 +153,7 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
                 : card
             )
           );
-        }, startDelay + ANIMATION_DURATION - FLIP_START_OFFSET);
+        }, startDelay);
         timeoutsRef.current.push(flipTimeout);
       }
 
@@ -201,6 +201,7 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
         targetHand: cardToExit.fromHand,
         targetIndex: cardToExit.fromIndex,
         shouldFlip: false,
+        isExit: true,
       };
     });
 

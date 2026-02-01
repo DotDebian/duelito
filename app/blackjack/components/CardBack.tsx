@@ -2,11 +2,17 @@
 
 import { memo } from 'react';
 
-export const CardBack = memo(function CardBack() {
+interface CardBackProps {
+  flipDirection?: 'horizontal' | 'vertical';
+}
+
+export const CardBack = memo(function CardBack({ flipDirection = 'horizontal' }: CardBackProps) {
+  const backTransform = flipDirection === 'vertical' ? 'rotateX(180deg)' : 'rotateY(180deg)';
+
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 120 167"
          className="absolute h-full w-full rounded-8 shadow-md sm:shadow-none sm:drop-shadow-lg"
-         style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+         style={{ backfaceVisibility: 'hidden', transform: backTransform }}
     >
       <g filter="url(#card-backside_svg__a)">
         <path fill="#3C3F6B" d="M8 1a8 8 0 0 0-8 8v128a8 8 0 0 0 8 8h88a8 8 0 0 0 8-8V9a8 8 0 0 0-8-8z"></path>
