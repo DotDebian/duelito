@@ -118,7 +118,7 @@ export default function PlinkoPage() {
 
   return (
     <GameLayout>
-      <div className="mx-auto flex h-[85dvh] max-h-[750px] w-[94%] max-w-[1260px] flex-row rounded-12 bg-dark-900 transition-all duration-200 mt-32">
+      <div className="mx-auto flex h-[85dvh] max-h-[750px] w-full max-w-[1260px] flex-row rounded-12 bg-dark-900 transition-all duration-200">
         <PlinkoBettingSidebar
           betMode={betMode}
           onBetModeChange={setBetMode}

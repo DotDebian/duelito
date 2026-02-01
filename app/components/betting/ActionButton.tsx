@@ -6,6 +6,7 @@ interface ActionButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   disabled?: boolean;
+  variant?: 'primary' | 'success';
   children: React.ReactNode;
 }
 
@@ -13,14 +14,20 @@ export const ActionButton = memo(function ActionButton({
   onClick,
   isLoading = false,
   disabled = false,
+  variant = 'primary',
   children,
 }: ActionButtonProps) {
+  const variantClasses = {
+    primary: 'bg-blue-600 hover:bg-blue-500',
+    success: 'bg-green-600 hover:bg-green-500',
+  };
+
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex h-[48px] w-full items-center justify-center rounded-8 bg-blue-600 px-[24px] py-8 text-b-lg font-bold text-light-000 transition-transform duration-75 hover:bg-blue-500 active:scale-95 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50"
+      className={`flex h-[48px] w-full items-center justify-center rounded-8 px-[24px] py-8 text-b-lg font-bold text-light-000 transition-transform duration-75 active:scale-95 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50 ${variantClasses[variant]}`}
     >
       <span className="flex items-center justify-center gap-8">
         {isLoading && (
