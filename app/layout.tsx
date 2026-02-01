@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Duel - The First Casino That Gives a Fuck',
+  title: {
+    default: 'Duel',
+    template: '%s | Duel',
+  },
   description: 'Just the purest form of gambling - The way it should be.',
 };
 
