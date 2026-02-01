@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 
 const originalsGames = [
@@ -69,9 +70,14 @@ const originalsGames = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [isOriginalsOpen, setIsOriginalsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check if we're on an originals game page
+  const isOnGamePage = originalsGames.some(game => pathname.startsWith(game.href));
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {
@@ -115,6 +121,13 @@ export function Header() {
 
           {/* Navigation */}
           <div className="relative -ml-16 mr-8 hidden items-center lg:flex">
+            {/* Active indicator pill */}
+            {isOnGamePage && (
+              <div
+                className="absolute bottom-0 left-0 z-0 h-4 w-[10px] rounded-12 bg-blue-600 transition-all duration-150 ease-in-out"
+                style={{ transform: 'translateX(56.5px)' }}
+              />
+            )}
             {/* Originals Dropdown */}
             <div
               ref={dropdownRef}
@@ -123,9 +136,10 @@ export function Header() {
               onMouseLeave={handleMouseLeave}
             >
               <button
+                ref={buttonRef}
                 onClick={handleClick}
                 className={`flex h-[40px] items-center gap-x-8 rounded-8 bg-transparent px-16 py-8 text-b-lg font-bold transition-all duration-150 md:h-[48px] md:px-16 ${
-                  isOriginalsOpen ? 'text-light-000' : 'text-dark-200 hover:text-light-000'
+                  isOriginalsOpen || isOnGamePage ? 'text-light-000' : 'text-dark-200 hover:text-light-000'
                 }`}
               >
                 <div className="h-16 w-16">
