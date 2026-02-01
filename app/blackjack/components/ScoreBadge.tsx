@@ -8,19 +8,26 @@ interface ScoreBadgeProps {
   cards: Card[];
   result?: HandResult;
   showResult?: boolean;
+  isDealer?: boolean;
 }
 
-export const ScoreBadge = memo(function ScoreBadge({ cards, result, showResult }: ScoreBadgeProps) {
+export const ScoreBadge = memo(function ScoreBadge({ cards, result, showResult, isDealer = false }: ScoreBadgeProps) {
   const value = formatHandValue(cards);
 
   let bgColor = 'bg-dark-400';
-  const textColor = 'text-light-000';
+  let textColor = 'text-light-000';
 
-  if (showResult) {
+  // Only player badge changes color
+  if (showResult && !isDealer) {
     if (result === 'win' || result === 'blackjack') {
       bgColor = 'bg-green-500';
+      textColor = 'text-dark-900';
     } else if (result === 'lose') {
       bgColor = 'bg-red-500';
+      textColor = 'text-dark-900';
+    } else if (result === 'push') {
+      bgColor = 'bg-yellow-500';
+      textColor = 'text-dark-900';
     }
   }
 
