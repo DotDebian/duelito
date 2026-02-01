@@ -55,3 +55,8 @@ CSS variables in `globals.css`:
 - Components use `'use client'` directive when needing React hooks
 - Barrel exports from `app/components/index.ts`
 - Inline SVG icons throughout (no icon library)
+
+## Working Guidelines
+
+### Éviter les usines à gaz
+À force de travailler sur un problème, tu as tendance à complexifier les solutions. Avant d'ajouter une nouvelle couche d'abstraction ou un mécanisme complexe, prends du recul et demande-toi si une solution plus simple existe. Privilégie toujours la lisibilité et la maintenabilité.
