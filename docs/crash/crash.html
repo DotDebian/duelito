@@ -1,0 +1,337 @@
+<div class="mx-auto flex h-[85dvh] w-[94%] max-w-[1260px] flex-row rounded-[12px] bg-dark-900 transition-all duration-200 max-h-[1000px] mt-32">
+    <div class="flex shrink-0 flex-col gap-16 overflow-y-auto rounded-[12px] rounded-r-none bg-dark-700 p-32 scrollbar-none w-[380px]">
+        <!---->
+        <div data-testid="autobet-container"><!---->
+            <div role="tablist" aria-orientation="horizontal"
+                 class="h-[48px] p-4 relative inline-flex gap-4 rounded-12 bg-dark-600 w-full mb-16">
+                <div class="transition-all duration-200 bg-dark-400 top-[4px] h-[calc(100%-8px)] absolute left-0 z-10 transform rounded-8"
+                     style="width: 152px; transform: translateX(4px); will-change: transform, width;"></div>
+                <button id="headlessui-tabs-tab-5" role="tab" type="button" aria-selected="true" tabindex="0"
+                        data-headlessui-state="selected"
+                        class="z-20 flex size-full cursor-pointer items-center justify-center text-nowrap rounded-8 py-8 font-semibold text-dark-200 outline-none transition-all duration-100 focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-30 gap-8 px-[12px] text-b-md hover:cursor-pointer ui-selected:text-light-000 ui-selected:brightness-200 ui-not-selected:text-dark-200 ui-not-selected:brightness-100 ui-not-selected:enabled:hover:text-light-000"
+                        aria-controls="headlessui-tabs-panel-7">Manual
+                </button>
+                <button id="headlessui-tabs-tab-6" role="tab" type="button" aria-selected="false" tabindex="-1"
+                        data-headlessui-state=""
+                        class="z-20 flex size-full cursor-pointer items-center justify-center text-nowrap rounded-8 py-8 font-semibold text-dark-200 outline-none transition-all duration-100 focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-30 gap-8 px-[12px] text-b-md hover:cursor-pointer ui-selected:text-light-000 ui-selected:brightness-200 ui-not-selected:text-dark-200 ui-not-selected:brightness-100 ui-not-selected:enabled:hover:text-light-000"
+                        aria-controls="headlessui-tabs-panel-8">Auto
+                </button>
+            </div>
+            <div class="flex w-full flex-col gap-16 mb-16">
+                <div class="flex flex-col gap-y-8">
+                    <div class="w-full">
+                        <div data-headlessui-state="">
+                            <div>
+                                <div class="flex flex-col gap-4 mt-[22px]" data-testid="bet-amount-input" game="crash"
+                                     isinsidemodal="false" tooltipplacement="top" defaultzerofordemo="true"
+                                     hideerrors="false" hidemaxbutton="false" disableglobalmaxbetvalidation="false"
+                                     disablebetoverbalancevalidation="false">
+                                    <div class="mt-[-22px] flex justify-between gap-4 whitespace-nowrap text-b-md font-semibold text-dark-200"
+                                         data-testid="bet-input-label"><span>Bet Amount</span><span
+                                            class="ml-auto max-w-[50%] truncate"
+                                            data-testid="money-input-amount">0</span> BTC
+                                    </div>
+                                    <div class="group flex items-center focus-within:outline-dark-400 bg-dark-600 text-dark-200 outline outline-2 outline-offset-[-2px] outline-transparent transition-all [&amp;:valid:not(:placeholder-shown)]:text-light-000 group-[.validated]/form:[&amp;:invalid]:outline-red-500 group-[.validated]/form:[&amp;:invalid]:text-light-000 disabled:opacity-50 disabled:pointer-events-none hover:outline-dark-400 active:text-light-000 focus:text-light-000 active:outline-dark-400 focus:outline-dark-400 px-[12px] text-b-md font-semibold gap-4 rounded-8 py-8 placeholder:text-dark-300 h-[48px] [&amp;_input]:text-h-sm [&amp;_input]:font-semibold"
+                                         data-testid="bet-input" source-currency="101">
+                                        <div class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px] size-16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
+                                                 class="ms-h-full ms-w-full">
+                                                <path fill="#2B63F4" d="M14 7A7 7 0 1 1 0 7a7 7 0 0 1 14 0"></path>
+                                                <path fill="#fff"
+                                                      d="M6.927 11.705a.2.2 0 0 1-.2-.2V2.45c0-.11.09-.2.2-.2h.206c.11 0 .2.09.2.2v9.055a.2.2 0 0 1-.2.2zm1.727-6.43c-.103 0-.186-.078-.212-.177a1 1 0 0 0-.404-.577q-.381-.27-.99-.27-.428 0-.735.13-.306.13-.469.35a.85.85 0 0 0-.059.917 1 1 0 0 0 .3.295q.188.118.417.2t.461.136l.71.178q.428.099.823.27.398.168.713.428.317.258.502.624.185.365.185.857 0 .665-.34 1.17-.34.502-.982.787-.639.28-1.548.28-.883 0-1.533-.273a2.3 2.3 0 0 1-1.012-.797 2.3 2.3 0 0 1-.376-1.07.19.19 0 0 1 .193-.208h.954c.105 0 .19.08.211.184q.056.274.219.473.214.262.557.392.348.129.776.129.447 0 .783-.133a1.27 1.27 0 0 0 .532-.377.9.9 0 0 0 .196-.569.72.72 0 0 0-.174-.487 1.3 1.3 0 0 0-.476-.325 4.6 4.6 0 0 0-.71-.236l-.86-.222q-.934-.24-1.477-.728-.54-.491-.54-1.303 0-.669.362-1.171.366-.502.994-.78.627-.28 1.422-.28.805 0 1.41.28a2.3 2.3 0 0 1 .957.773q.291.411.346.927a.187.187 0 0 1-.191.203z"></path>
+                                            </svg>
+                                        </div>
+                                        <input autocomplete="do-not-autofill" type="text" inputmode="decimal" min="0.01"
+                                               max="50000" step="0.01"
+                                               class="w-full bg-transparent outline-none placeholder:text-dark-300 focus:text-light-000 text-light-000"
+                                               data-testid="currency-input" input-on-blur="false" placeholder="0.00"
+                                               value="0.00">
+                                        <div class="flex items-center justify-end gap-4 -mr-4"><!---->
+                                            <button class="touch-manipulation outline-none whitespace-nowrap min-w-[32px] bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed whitespace-nowrap min-w-[32px]"
+                                                    data-testid="bet-input-button-½" type="button"><!----><span
+                                                    class="flex items-center justify-center w-full gap-4 flex-row"
+                                                    data-testid="btn-content">½</span></button>
+                                            <button class="touch-manipulation outline-none whitespace-nowrap min-w-[32px] bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed whitespace-nowrap min-w-[32px]"
+                                                    data-testid="bet-input-button-2x" type="button"><!----><span
+                                                    class="flex items-center justify-center w-full gap-4 flex-row"
+                                                    data-testid="btn-content">2x</span></button>
+                                            <button class="touch-manipulation outline-none whitespace-nowrap uppercase bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed whitespace-nowrap uppercase"
+                                                    data-testid="bet-input-button-max" type="button"><!----><span
+                                                    class="flex items-center justify-center w-full gap-4 flex-row"
+                                                    data-testid="btn-content">Max</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!----></div>
+                        <div style="position: fixed; height: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"></div>
+                    </div><!----></div>
+                <div>
+                    <div class="flex items-center justify-between gap-4"><label
+                            class="text-b-md font-semibold text-dark-200" for="c9b3b13e-3e82-45b0-aef6-4307b5c59db2">Cashout
+                        at</label>
+                        <div class="h-4"></div>
+                    </div>
+                    <div class="group flex items-center outline outline-offset-[-2px] outline-transparent transition-all focus-within:outline-dark-400 bg-dark-600 text-dark-200 outline outline-2 outline-offset-[-2px] outline-transparent transition-all [&amp;:valid:not(:placeholder-shown)]:text-light-000 group-[.validated]/form:[&amp;:invalid]:outline-red-500 group-[.validated]/form:[&amp;:invalid]:text-light-000 disabled:opacity-50 disabled:pointer-events-none hover:outline-dark-400 active:text-light-000 focus:text-light-000 active:outline-dark-400 focus:outline-dark-400 px-[12px] h-[48px] text-b-md font-semibold gap-4 rounded-8 py-8 placeholder:text-dark-300">
+                        <span class="-mr-2 text-h-xs text-light-000"> x </span><input
+                            id="c9b3b13e-3e82-45b0-aef6-4307b5c59db2" autocomplete="do-not-autofill" type="text"
+                            inputmode="decimal" min="1.01" step="1"
+                            class="w-full bg-transparent outline-none placeholder:text-dark-300 focus:text-light-000 disabled:text-dark-200 text-light-000"
+                            input-on-blur="false" value="2">
+                        <div class="-mr-4 flex items-center gap-4">
+                            <button class="touch-manipulation outline-none bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed"
+                                    type="button" aria-label="Decrease cashout"
+                                    aria-controls="c9b3b13e-3e82-45b0-aef6-4307b5c59db2"><!----><span
+                                    class="flex items-center justify-center w-full gap-4 flex-row"
+                                    data-testid="btn-content"><div
+                                    class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px] size-[12px]"><svg
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14"
+                                    class="ms-h-full ms-w-full"><path fill-rule="evenodd"
+                                                                      d="M6.903 7.74c.053.055.14.055.194 0l3.428-3.494a.543.543 0 0 1 .775 0l.211.216a.543.543 0 0 1 0 .76L7.387 9.426a.543.543 0 0 1-.774 0L2.489 5.222a.543.543 0 0 1 0-.76l.211-.216a.543.543 0 0 1 .775 0z"
+                                                                      clip-rule="evenodd"></path></svg></div></span>
+                            </button>
+                            <button class="touch-manipulation outline-none bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed"
+                                    type="button" aria-label="Increase cashout"
+                                    aria-controls="c9b3b13e-3e82-45b0-aef6-4307b5c59db2"><!----><span
+                                    class="flex items-center justify-center w-full gap-4 flex-row"
+                                    data-testid="btn-content"><div
+                                    class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px] size-[12px]"><svg
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14"
+                                    class="ms-h-full ms-w-full"><path fill-rule="evenodd"
+                                                                      d="M6.903 5.931a.136.136 0 0 1 .194 0l3.428 3.495a.543.543 0 0 0 .775 0l.211-.216a.543.543 0 0 0 0-.76L7.387 4.246a.543.543 0 0 0-.774 0L2.489 8.45a.543.543 0 0 0 0 .76l.211.216a.543.543 0 0 0 .775 0z"
+                                                                      clip-rule="evenodd"></path></svg></div></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="headlessui-tabs-panel-7" role="tabpanel" tabindex="0" data-headlessui-state="selected"
+                     class="focus-visible:outline-0" aria-labelledby="headlessui-tabs-tab-5">
+                    <div class="flex flex-col gap-16"></div>
+                </div>
+                <span aria-hidden="true"
+                      style="position: fixed; height: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                      id="headlessui-tabs-panel-8" role="tabpanel" tabindex="-1" class="focus-visible:outline-0"
+                      aria-labelledby="headlessui-tabs-tab-6"></span></div>
+        </div>
+        <div class="flex flex-col gap-y-16">
+            <div class="flex min-h-[30px] w-full items-center justify-center gap-x-8"><p
+                    class="text-h-xs text-dark-200">Profit on Win</p>
+                <p class="min-w-[50px] text-h-sm"><span data-v-58ac4bdb=""
+                                                        class="inline-flex items-center justify-center gap-4 tabular-nums"><div
+                        data-v-58ac4bdb=""
+                        class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px] size-16"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 22 22"
+                        class="ms-h-full ms-w-full"><path fill="#f7931a"
+                                                          d="M21.67 13.66a11 11 0 1 1-8-13.33 11 11 0 0 1 8 13.33"></path><path
+                        fill="#fff"
+                        d="M15.85 9.43C16.07 8 15 7.18 13.43 6.66l.5-2-1.21-.3-.48 1.94-1-.22.48-1.95-1.2-.3-.5 2c-.26-.06-.52-.11-.77-.18l-1.63-.44L7.3 6.5s.89.21.88.22a.65.65 0 0 1 .56.7l-1.36 5.43a.44.44 0 0 1-.55.29S6 12.92 6 12.92l-.6 1.38 1.57.39.86.23-.5 2 1.21.3.5-2 1 .25-.5 2 1.21.3.5-2c2.06.39 3.61.23 4.26-1.63a2.13 2.13 0 0 0-1.11-2.93 1.92 1.92 0 0 0 1.45-1.78m-2.76 3.87c-.37 1.5-2.89.69-3.71.49l.62-2.66c.86.2 3.48.61 3.09 2.17m.38-3.89c-.34 1.36-2.44.67-3.13.5l.6-2.41c.69.17 2.88.5 2.53 1.91"></path></svg></div><div
+                        data-v-58ac4bdb="" class="" data-testid="currency-value"><span data-v-58ac4bdb=""
+                                                                                       class=""></span><!---->
+                    <!----><span data-v-58ac4bdb="" data-testid="currency-amount">$0.00</span></div></span></p>
+            </div>
+            <button class="touch-manipulation outline-none transition-colors duration-[250ms] mt-2 shrink-0 bg-blue-600 text-light-000 hover:bg-blue-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 w-full px-[24px] h-[48px] text-b-lg font-bold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 relative disabled:cursor-not-allowed transition-colors duration-[250ms] mt-2 shrink-0"
+                    data-testid="manual-bet-button" is-seed-valid="true"><!----><span
+                    class="flex items-center justify-center w-full gap-8 flex-row" data-testid="btn-content"><span
+                    class="flex items-center gap-x-8 truncate"><!----><span class="truncate">Bet (Next Round)</span>
+                <!----></span></span></button>
+        </div>
+        <div class="relative flex w-full flex-col mt-2 h-full min-h-[200px] overflow-hidden">
+            <div class="flex items-center justify-between py-4">
+                <div class="text-h-xs text-dark-300">0 Players</div>
+                <div>
+                    <div class="flex items-center gap-4 text-h-xs text-light-000">
+                        <div class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px] size-16"
+                             currency="USD">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"
+                                 class="ms-h-full ms-w-full">
+                                <path fill="#2B63F4" d="M14 7A7 7 0 1 1 0 7a7 7 0 0 1 14 0"></path>
+                                <path fill="#fff"
+                                      d="M6.927 11.705a.2.2 0 0 1-.2-.2V2.45c0-.11.09-.2.2-.2h.206c.11 0 .2.09.2.2v9.055a.2.2 0 0 1-.2.2zm1.727-6.43c-.103 0-.186-.078-.212-.177a1 1 0 0 0-.404-.577q-.381-.27-.99-.27-.428 0-.735.13-.306.13-.469.35a.85.85 0 0 0-.059.917 1 1 0 0 0 .3.295q.188.118.417.2t.461.136l.71.178q.428.099.823.27.398.168.713.428.317.258.502.624.185.365.185.857 0 .665-.34 1.17-.34.502-.982.787-.639.28-1.548.28-.883 0-1.533-.273a2.3 2.3 0 0 1-1.012-.797 2.3 2.3 0 0 1-.376-1.07.19.19 0 0 1 .193-.208h.954c.105 0 .19.08.211.184q.056.274.219.473.214.262.557.392.348.129.776.129.447 0 .783-.133a1.27 1.27 0 0 0 .532-.377.9.9 0 0 0 .196-.569.72.72 0 0 0-.174-.487 1.3 1.3 0 0 0-.476-.325 4.6 4.6 0 0 0-.71-.236l-.86-.222q-.934-.24-1.477-.728-.54-.491-.54-1.303 0-.669.362-1.171.366-.502.994-.78.627-.28 1.422-.28.805 0 1.41.28a2.3 2.3 0 0 1 .957.773q.291.411.346.927a.187.187 0 0 1-.191.203z"></path>
+                            </svg>
+                        </div>
+                        <div>0.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grow overflow-x-hidden overflow-y-scroll rounded-[12px] bg-dark-600 py-8 pl-16 pr-4 scrollbar-none"></div>
+        </div>
+    </div>
+    <div class="relative grow overflow-hidden py-16 relative grow overflow-hidden py-16 px-32 pl-16 pr-32">
+        <div class="flex h-full flex-col items-center justify-between">
+            <div class="flex w-full items-center justify-end"><!---->
+                <div class="absolute z-10 flex flex-row-reverse items-center gap-x-16 overflow-hidden w-[75%] self-start">
+                    <button class="touch-manipulation outline-none mr-16 lg:mr-0 bg-dark-600 text-dark-200 hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 disabled:bg-dark-600 disabled:text-light-000 disabled:opacity-50 px-[10px] h-[32px] text-b-sm font-semibold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed mr-16 lg:mr-0">
+                        <!----><span class="flex items-center justify-center w-full gap-4 flex-row"
+                                     data-testid="btn-content"><div
+                            class="ms-flex ms-flex-shrink-0 ms-items-center ms-justify-center ms-size-[14px]"><svg
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 15"
+                            class="ms-h-full ms-w-full"><path fill-rule="evenodd"
+                                                              d="M5.286 1.783c0-.63.512-1.142 1.143-1.142h1.143c.63 0 1.142.511 1.142 1.142v11.43c0 .63-.511 1.142-1.142 1.142H6.429a1.143 1.143 0 0 1-1.143-1.143zM.143 8.641c0-.632.512-1.143 1.143-1.143h1.143c.631 0 1.143.511 1.143 1.143v4.571c0 .631-.512 1.143-1.143 1.143H1.286a1.143 1.143 0 0 1-1.143-1.143zm13.714-2.286c0-.631-.511-1.143-1.142-1.143h-1.143c-.631 0-1.143.512-1.143 1.143v6.857c0 .631.511 1.143 1.143 1.143h1.143c.63 0 1.142-.512 1.142-1.143z"
+                                                              clip-rule="evenodd"></path></svg></div></span></button>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none;">
+                        <div class="text-h-xs">3.51x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">2.35x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">3.53x</div><!----></div>
+                    <div class="text-dark-300 hover:text-dark-200 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">1.50x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">7.46x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">27.84x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">2.52x</div><!----></div>
+                    <div class="text-green-600 hover:text-green-500 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">12.87x</div><!----></div>
+                    <div class="text-dark-300 hover:text-dark-200 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">1.29x</div><!----></div>
+                    <div class="text-dark-300 hover:text-dark-200 cursor-pointer flex flex-col items-center justify-center transition-colors duration-150"
+                         style="opacity: 1; transform: none; transform-origin: 50% 50% 0px;">
+                        <div class="text-h-xs">1.86x</div><!----></div>
+                    <div class="absolute bottom-0 left-0 top-0 w-32 bg-gradient-to-r from-dark-900 to-transparent"></div>
+                </div>
+            </div>
+            <div class="w-full mb-8 mt-16 h-full">
+                <div class="h-full w-full max-w-full pt-16">
+                    <div class="relative h-full w-full pl-[50px] md:pl-[72px]">
+                        <div class="absolute bottom-[-5%] left-[-8%] h-1/2 w-1/2 rounded-full transition-colors duration-200 bg-blue-500/30 blur-[512px]"></div>
+                        <div class="relative z-[5] h-full w-full max-w-full">
+                            <canvas width="760" height="764.3499755859375" class="absolute inset-0 h-full w-full"
+                                    style="width: 760px; height: 764.35px;"></canvas>
+                            <div class="absolute flex size-[1px] items-center justify-center transition-opacity duration-200"
+                                 style="transform: translate3d(474.045px, 554.462px, 0px); opacity: 1;">
+                                <div class="size-8 min-w-8 rounded-full md:size-16 md:min-w-16 bg-blue-600"></div>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 left-8 top-0 flex w-[50px] flex-col justify-between">
+                            <div class="absolute bottom-0 left-0 top-0 w-16">
+                                <div class="flex h-[25%] flex-col justify-between">
+                                    <div class=""></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class=""></div>
+                                </div>
+                                <div class="flex h-[25%] flex-col justify-between">
+                                    <div class=""></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class=""></div>
+                                </div>
+                                <div class="flex h-[25%] flex-col justify-between">
+                                    <div class=""></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class=""></div>
+                                </div>
+                                <div class="flex h-[25%] flex-col justify-between">
+                                    <div class=""></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class="h-[2px] w-4 rounded-full bg-dark-400 md:w-8"></div>
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <div class="absolute left-0 flex h-[1px] w-[50px] items-center justify-center transition-all duration-[50ms] md:w-[70px]"
+                                 style="top: 764.35px;">
+                                <div class="absolute left-0 mr-8 h-[2px] w-8 rounded-full bg-dark-400 pl-8 md:w-16"></div>
+                                <div class="relative z-[5] text-b-sm font-bold tabular-nums md:text-h-xs">1.0x</div>
+                            </div>
+                            <div class="absolute left-0 flex h-[1px] w-[50px] items-center justify-center transition-all duration-[50ms] md:w-[70px]"
+                                 style="top: 573.262px;">
+                                <div class="absolute left-0 mr-8 h-[2px] w-8 rounded-full bg-dark-400 pl-8 md:w-16"></div>
+                                <div class="relative z-[5] text-b-sm font-bold tabular-nums md:text-h-xs">4.4x</div>
+                            </div>
+                            <div class="absolute left-0 flex h-[1px] w-[50px] items-center justify-center transition-all duration-[50ms] md:w-[70px]"
+                                 style="top: 382.175px;">
+                                <div class="absolute left-0 mr-8 h-[2px] w-8 rounded-full bg-dark-400 pl-8 md:w-16"></div>
+                                <div class="relative z-[5] text-b-sm font-bold tabular-nums md:text-h-xs">5.5x</div>
+                            </div>
+                            <div class="absolute left-0 flex h-[1px] w-[50px] items-center justify-center transition-all duration-[50ms] md:w-[70px]"
+                                 style="top: 191.088px;">
+                                <div class="absolute left-0 mr-8 h-[2px] w-8 rounded-full bg-dark-400 pl-8 md:w-16"></div>
+                                <div class="relative z-[5] text-b-sm font-bold tabular-nums md:text-h-xs">6.2x</div>
+                            </div>
+                            <div class="absolute left-0 flex h-[1px] w-[50px] items-center justify-center transition-all duration-[50ms] md:w-[70px]"
+                                 style="top: 0px;">
+                                <div class="absolute left-0 mr-8 h-[2px] w-8 rounded-full bg-dark-400 pl-8 md:w-16"></div>
+                                <div class="relative z-[5] text-b-sm font-bold tabular-nums md:text-h-xs">6.7x</div>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-0 left-[50px] flex h-16 flex-col justify-between border-b border-dark-400 md:left-[72px] right-0"></div>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"><!---->
+                    <!----><!----></div>
+                <div class="absolute left-0 right-0 top-0 flex flex-col items-center justify-center bottom-1/4">
+                    <div class="relative flex flex-col items-center justify-center">
+                        <div class="text-h-xxl tabular-nums"><span class="tabular-nums">4.57x</span></div>
+                        <div class="absolute left-0 right-0 top-full flex items-center justify-center pt-16">
+                            <!----></div>
+                    </div>
+                </div>
+                <div class="pointer-events-none absolute bottom-0 left-0 right-0 rounded-r-12 bg-gradient-to-t from-dark-900 to-transparent h-[50px]"></div>
+                <div class="pointer-events-none absolute bottom-0 left-0 top-0 bg-gradient-to-r from-dark-900 to-transparent w-[30px]"></div>
+                <div data-v-77db5dba=""
+                     class="flex flex-col items-end gap-x-16 gap-y-4 md:flex-row md:items-center absolute bottom-[40px] right-16 z-10 lg:bottom-[70px] lg:right-32">
+                    <!----><!---->
+                    <div data-headlessui-state="">
+                        <div data-v-77db5dba="">
+                            <div data-v-77db5dba="" class="flex items-center gap-x-8">
+                                <div data-v-77db5dba="" class="size-8 min-w-8">
+                                    <div data-v-77db5dba=""
+                                         class="absolute size-8 min-w-8 rounded-full bg-green-500 opacity-75 network-ping"></div>
+                                    <div data-v-77db5dba="" class="size-8 min-w-8 rounded-full bg-green-500"></div>
+                                </div>
+                                <p data-v-77db5dba="" class="text-b-sm text-light-000 md:text-b-md">Network status</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: fixed; height: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px; display: none;"></div>
+                </div>
+            </div>
+            <div class="flex w-full justify-between"><span><div class="flex select-none items-center"><button
+                    class="touch-manipulation outline-none flex-shrink-0 font-semibold lg:font-bold !px-0 hover:bg-transparent text-dark-200 hover:text-light-000 active:text-light-000 disabled:bg-transparent disabled:text-light-000 disabled:opacity-50 px-[12px] h-[40px] text-b-md touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed flex-shrink-0 font-semibold lg:font-bold !px-0 hover:bg-transparent text-dark-200"><!----><span
+                    class="flex items-center justify-center w-full gap-4 flex-row" data-testid="btn-content"><div
+                    class="flex gap-4"><div class="size-16 translate-y-2"><svg xmlns="http://www.w3.org/2000/svg"
+                                                                               fill="currentColor" viewBox="0 0 14 14"
+                                                                               class="ms-h-full ms-w-full"><g
+                    clip-path="url(#icon-duel-house-edge_svg__a)"><path
+                    d="M6.663.082a.73.73 0 0 1 .775.064l6.27 4.702a.73.73 0 1 1-.878 1.169l-.277-.208v5.37a2.82 2.82 0 0 1-2.821 2.82H4.267a2.82 2.82 0 0 1-2.821-2.82v-5.37l-.277.208a.731.731 0 1 1-.877-1.17L6.56.148zm.336 4.828q-1.245 0-1.928.818t-.684 2.316q0 1.495.684 2.317.683.819 1.928.818 1.245 0 1.93-.818.683-.822.683-2.317 0-1.497-.683-2.316-.684-.818-1.93-.818m1.02 3.3q-.022.824-.265 1.287-.263.505-.755.505-.49 0-.758-.505a2 2 0 0 1-.123-.31zm-1.02-2.123q.492 0 .755.505.074.14.126.312l-1.901.986q.02-.834.262-1.298.268-.504.758-.505"></path></g><defs><clipPath
+                    id="icon-duel-house-edge_svg__a"><path d="M0 0h14v14H0z"></path></clipPath></defs></svg></div><div>Zero Edge</div></div></span></button></div></span>
+                <div class="flex select-none items-center">
+                    <button class="touch-manipulation outline-none !px-0 font-semibold hover:bg-transparent lg:font-bold text-dark-200 hover:text-light-000 active:text-light-000 disabled:bg-transparent disabled:text-light-000 disabled:opacity-50 px-[12px] h-[40px] text-b-md touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed !px-0 font-semibold hover:bg-transparent lg:font-bold text-dark-200"
+                            data-testid="open-fairness-modal"><!----><span
+                            class="flex items-center justify-center w-full gap-4 flex-row" data-testid="btn-content"><div
+                            class="size-16"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"
+                                                 class="ms-h-full ms-w-full"><path fill="currentColor"
+                                                                                   fill-rule="evenodd"
+                                                                                   d="m1.176 3.27.237 5.245c.115 2.557 1.66 4.852 4.036 5.997l1.324.638a2.84 2.84 0 0 0 2.454 0l1.324-.638c2.376-1.145 3.92-3.44 4.036-5.997l.237-5.245c.017-.375-.33-.68-.705-.677a6 6 0 0 1-2.005-.33c-.746-.256-1.593-.726-2.324-1.184a3.41 3.41 0 0 0-3.58 0c-.73.458-1.578.928-2.324 1.184a6 6 0 0 1-2.005.33c-.375-.004-.722.302-.705.677m10.4 3.193a.952.952 0 0 0-1.497-1.177L7.025 9.172 5.782 8.136A.952.952 0 1 0 4.562 9.6l1.997 1.663a.95.95 0 0 0 1.358-.143z"
+                                                                                   clip-rule="evenodd"></path></svg></div>Provably Fair</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
