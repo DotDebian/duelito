@@ -3,8 +3,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type { BlackjackGameState } from '../types';
 import { canSplitHand } from '@/lib/blackjack-utils';
-
-const INITIAL_BALANCE = 1000;
+import { useBalance } from '@/app/contexts/BalanceContext';
 
 const initialState: BlackjackGameState = {
   gameId: null,
@@ -12,7 +11,6 @@ const initialState: BlackjackGameState = {
   dealerHand: null,
   playerHands: [],
   activeHandIndex: 0,
-  balance: INITIAL_BALANCE,
   currentBet: 0,
   insuranceBet: null,
   result: null,
@@ -23,6 +21,7 @@ export function useBlackjackGame() {
   const [gameState, setGameState] = useState<BlackjackGameState>(initialState);
   const [betAmount, setBetAmount] = useState('10.00');
   const [isLoading, setIsLoading] = useState(false);
+  const { balance, addBalance, subtractBalance } = useBalance();
 
   const currentHand = useMemo(() => {
     return gameState.playerHands[gameState.activeHandIndex] ?? null;
@@ -39,7 +38,10 @@ export function useBlackjackGame() {
 
   const deal = useCallback(async () => {
     const bet = parseFloat(betAmount) || 0;
-    if (bet <= 0 || bet > gameState.balance) return;
+    if (bet <= 0 || bet > balance) return;
+
+    // Deduct bet from balance
+    subtractBalance(bet);
 
     setIsLoading(true);
     try {
@@ -57,7 +59,6 @@ export function useBlackjackGame() {
         dealerHand: data.dealerHand,
         playerHands: data.playerHands,
         activeHandIndex: data.activeHandIndex,
-        balance: prev.balance - bet,
         currentBet: bet,
         result: null,
         payout: 0,
@@ -70,7 +71,7 @@ export function useBlackjackGame() {
     } finally {
       setIsLoading(false);
     }
-  }, [betAmount, gameState.balance, triggerDealerTurn]);
+  }, [betAmount, balance, subtractBalance, triggerDealerTurn]);
 
   const hit = useCallback(async () => {
     if (gameState.phase !== 'player_turn' || !currentHand || currentHand.isBusted) return;
@@ -122,6 +123,10 @@ export function useBlackjackGame() {
       const data = await response.json();
 
       if (data.phase === 'settled') {
+        // Add payout to balance
+        if (data.payout > 0) {
+          addBalance(data.payout);
+        }
         setGameState(prev => ({
           ...prev,
           dealerHand: data.dealerHand,
@@ -129,7 +134,6 @@ export function useBlackjackGame() {
           phase: 'settled',
           result: data.result,
           payout: data.payout,
-          balance: prev.balance + data.payout,
         }));
       } else {
         setGameState(prev => ({
@@ -142,7 +146,7 @@ export function useBlackjackGame() {
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.activeHandIndex]);
+  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.activeHandIndex, addBalance]);
 
   // Update ref when stand changes
   useEffect(() => {
@@ -151,7 +155,10 @@ export function useBlackjackGame() {
 
   const double = useCallback(async () => {
     if (gameState.phase !== 'player_turn' || !currentHand || currentHand.cards.length !== 2) return;
-    if (gameState.balance < currentHand.bet) return;
+    if (balance < currentHand.bet) return;
+
+    // Deduct additional bet
+    subtractBalance(currentHand.bet);
 
     setIsLoading(true);
     try {
@@ -171,7 +178,6 @@ export function useBlackjackGame() {
         playerHands: data.playerHands,
         activeHandIndex: data.activeHandIndex,
         phase: data.phase,
-        balance: prev.balance - currentHand.bet, // Deduct additional bet
       }));
 
       // If phase changed to dealer_turn, trigger it
@@ -181,11 +187,14 @@ export function useBlackjackGame() {
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.gameId, gameState.phase, gameState.playerHands, gameState.activeHandIndex, gameState.balance, currentHand, triggerDealerTurn]);
+  }, [gameState.gameId, gameState.phase, gameState.playerHands, gameState.activeHandIndex, balance, currentHand, triggerDealerTurn, subtractBalance]);
 
   const split = useCallback(async () => {
     if (gameState.phase !== 'player_turn' || !canSplitHand(currentHand)) return;
-    if (gameState.balance < (currentHand?.bet ?? 0)) return;
+    if (balance < (currentHand?.bet ?? 0)) return;
+
+    // Deduct additional bet
+    subtractBalance(currentHand?.bet ?? 0);
 
     setIsLoading(true);
     try {
@@ -205,7 +214,6 @@ export function useBlackjackGame() {
         playerHands: data.playerHands,
         activeHandIndex: data.activeHandIndex,
         phase: data.phase,
-        balance: prev.balance - (currentHand?.bet ?? 0), // Deduct additional bet
       }));
 
       // If phase changed to dealer_turn, trigger it
@@ -215,14 +223,18 @@ export function useBlackjackGame() {
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.gameId, gameState.phase, gameState.playerHands, gameState.activeHandIndex, gameState.balance, currentHand, triggerDealerTurn]);
+  }, [gameState.gameId, gameState.phase, gameState.playerHands, gameState.activeHandIndex, balance, currentHand, triggerDealerTurn, subtractBalance]);
 
   const acceptInsurance = useCallback(async () => {
     if (gameState.phase !== 'insurance_offer') return;
 
+    const insuranceBet = gameState.currentBet / 2;
+
+    // Deduct insurance bet
+    subtractBalance(insuranceBet);
+
     setIsLoading(true);
     try {
-      const insuranceBet = gameState.currentBet / 2;
       const response = await fetch('/api/blackjack/insurance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -237,6 +249,10 @@ export function useBlackjackGame() {
       const data = await response.json();
 
       if (data.phase === 'settled') {
+        // Add payout to balance
+        if (data.payout > 0) {
+          addBalance(data.payout);
+        }
         setGameState(prev => ({
           ...prev,
           dealerHand: data.dealerHand,
@@ -244,7 +260,6 @@ export function useBlackjackGame() {
           result: data.result,
           payout: data.payout,
           insuranceBet,
-          balance: prev.balance - insuranceBet + data.payout,
         }));
       } else {
         setGameState(prev => ({
@@ -252,13 +267,12 @@ export function useBlackjackGame() {
           dealerHand: data.dealerHand,
           phase: data.phase,
           insuranceBet,
-          balance: prev.balance - insuranceBet,
         }));
       }
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.currentBet]);
+  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.currentBet, subtractBalance, addBalance]);
 
   const declineInsurance = useCallback(async () => {
     if (gameState.phase !== 'insurance_offer') return;
@@ -279,13 +293,16 @@ export function useBlackjackGame() {
       const data = await response.json();
 
       if (data.phase === 'settled') {
+        // Add payout to balance
+        if (data.payout > 0) {
+          addBalance(data.payout);
+        }
         setGameState(prev => ({
           ...prev,
           dealerHand: data.dealerHand,
           phase: 'settled',
           result: data.result,
           payout: data.payout,
-          balance: prev.balance + data.payout,
         }));
       } else {
         setGameState(prev => ({
@@ -297,23 +314,21 @@ export function useBlackjackGame() {
     } finally {
       setIsLoading(false);
     }
-  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.currentBet]);
+  }, [gameState.gameId, gameState.phase, gameState.dealerHand, gameState.playerHands, gameState.currentBet, addBalance]);
 
   const newGame = useCallback(() => {
-    setGameState(prev => ({
-      ...initialState,
-      balance: prev.balance,
-    }));
+    setGameState(initialState);
   }, []);
 
   // Computed properties
   const canHit = gameState.phase === 'player_turn' && currentHand && !currentHand.isBusted && !currentHand.isStood;
   const canStand = gameState.phase === 'player_turn' && currentHand && !currentHand.isBusted;
-  const canDouble = gameState.phase === 'player_turn' && currentHand && currentHand.cards.length === 2 && !currentHand.isBusted && gameState.balance >= currentHand.bet;
-  const canSplit = gameState.phase === 'player_turn' && canSplitHand(currentHand) && gameState.balance >= (currentHand?.bet ?? 0);
+  const canDouble = gameState.phase === 'player_turn' && currentHand && currentHand.cards.length === 2 && !currentHand.isBusted && balance >= currentHand.bet;
+  const canSplit = gameState.phase === 'player_turn' && canSplitHand(currentHand) && balance >= (currentHand?.bet ?? 0);
 
   return {
     gameState,
+    balance,
     betAmount,
     setBetAmount,
     isLoading,

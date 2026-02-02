@@ -3,8 +3,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import type { BetMode, RiskLevel } from '@/types';
 import type { DropResult } from '../types';
+import { useBalance } from '@/app/contexts/BalanceContext';
 
 export function usePlinkoGame() {
+  const { balance, addBalance, subtractBalance } = useBalance();
   const [betMode, setBetMode] = useState<BetMode>('manual');
   const [betAmount, setBetAmount] = useState('0.00');
   const [risk, setRisk] = useState<RiskLevel>('high');
@@ -29,6 +31,14 @@ export function usePlinkoGame() {
   const addResult = useCallback((multiplier: number, color: string) => {
     resultIdRef.current++;
     const newId = resultIdRef.current;
+
+    // Add payout to balance
+    const bet = parseFloat(betAmount) || 0;
+    const payout = bet * multiplier;
+    if (payout > 0) {
+      addBalance(payout);
+    }
+
     setResultHistory((prev) => {
       const newResult = { id: newId, multiplier, color };
       const newHistory = [newResult, ...prev];
@@ -38,7 +48,21 @@ export function usePlinkoGame() {
         exiting: idx >= 10,
       }));
     });
-  }, []);
+  }, [betAmount, addBalance]);
+
+  // Deduct bet when dropping a ball
+  const deductBet = useCallback(() => {
+    const bet = parseFloat(betAmount) || 0;
+    if (bet <= 0 || bet > balance) return false;
+    subtractBalance(bet);
+    return true;
+  }, [betAmount, balance, subtractBalance]);
+
+  // Check if can bet
+  const canBet = useCallback(() => {
+    const bet = parseFloat(betAmount) || 0;
+    return bet > 0 && bet <= balance;
+  }, [betAmount, balance]);
 
   const toggleAutoPlay = useCallback(() => {
     setIsAutoPlaying((prev) => !prev);
@@ -60,5 +84,8 @@ export function usePlinkoGame() {
     toggleAutoPlay,
     resultHistory,
     addResult,
+    deductBet,
+    canBet,
+    balance,
   };
 }

@@ -66,7 +66,7 @@ export const BlackjackBettingSidebar = memo(function BlackjackBettingSidebar({
       {/* Balance display */}
       <div className="mb-16 flex items-center justify-between text-b-md text-dark-200">
         <span>Balance</span>
-        <span className="font-semibold text-light-000">{balance.toFixed(2)} BTC</span>
+        <span className="font-semibold text-light-000">${balance.toFixed(2)}</span>
       </div>
 
       <div className="mt-[22px]">
@@ -85,7 +85,7 @@ export const BlackjackBettingSidebar = memo(function BlackjackBettingSidebar({
           </span>
           {payout > 0 && (
             <span className="text-b-md text-green-500">
-              +{payout.toFixed(2)} BTC
+              +${payout.toFixed(2)}
             </span>
           )}
         </div>

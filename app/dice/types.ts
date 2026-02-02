@@ -26,7 +26,6 @@ export interface AutoBetConfig {
 
 export interface DiceGameState {
   phase: DicePhase;
-  balance: number;
   betAmount: string;
   betMode: BetMode;
 

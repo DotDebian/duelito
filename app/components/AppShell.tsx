@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { SidebarProvider } from '@/app/contexts/SidebarContext';
+import { BalanceProvider } from '@/app/contexts/BalanceContext';
 import { Header, Sidebar, MainContent, Footer } from './';
 
 interface AppShellProps {
@@ -10,22 +11,24 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-[--background]">
-        <Header />
+    <BalanceProvider>
+      <SidebarProvider>
+        <div className="min-h-screen bg-[--background]">
+          <Header />
 
-        <div className="flex bg-dark-800 text-light-000">
-          <Sidebar />
+          <div className="flex bg-dark-800 text-light-000">
+            <Sidebar />
 
-          <MainContent>
-            <div className="flex flex-col p-16 sm:p-32">
-              {children}
-            </div>
+            <MainContent>
+              <div className="flex flex-col p-16 sm:p-32">
+                {children}
+              </div>
 
-            <Footer />
-          </MainContent>
+              <Footer />
+            </MainContent>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </BalanceProvider>
   );
 }

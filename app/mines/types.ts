@@ -39,7 +39,6 @@ export interface AutoBetConfig {
 
 export interface MinesGameState {
   phase: MinesPhase;
-  balance: number;
   betAmount: string;
   betMode: BetMode;
 

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
+import { useBalance } from '@/app/contexts/BalanceContext';
 
 const originalsGames = [
   {
@@ -71,6 +72,7 @@ const originalsGames = [
 
 export function Header() {
   const pathname = usePathname();
+  const { balance } = useBalance();
   const [isOriginalsOpen, setIsOriginalsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -178,14 +180,57 @@ export function Header() {
           </div>
         </div>
 
-        {/* Auth Buttons */}
+        {/* User Controls */}
         <div className="flex items-center gap-8">
-          <button className="flex h-[40px] items-center justify-center rounded-8 border border-dark-500 bg-transparent px-12 text-b-lg font-bold text-light-000 transition-colors hover:bg-dark-600 md:h-[48px] md:px-16">
-            Login
+          {/* Balance Button */}
+          <button className="ml-8 flex h-[40px] items-center rounded-8 bg-dark-500 px-[12px] text-b-md font-semibold transition-all hover:bg-dark-400 disabled:opacity-50 disabled:hover:bg-dark-500 md:h-[48px] md:px-16">
+            <div className="relative top-[1px] flex items-center justify-center overflow-hidden transition-all duration-300" style={{ minWidth: '57px' }}>
+              <div className="text-nowrap break-keep leading-[1]">
+                <span className="inline-flex items-center justify-center gap-4 tabular-nums">
+                  <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 2000 2000" className="h-full w-full">
+                      <path fill="#2775ca" d="M1000 2000c554.17 0 1000-445.83 1000-1000S1554.17 0 1000 0 0 445.83 0 1000s445.83 1000 1000 1000" />
+                      <path fill="#fff" d="M1275 1158.33c0-145.83-87.5-195.83-262.5-216.66-125-16.67-150-50-150-108.34s41.67-95.83 125-95.83c75 0 116.67 25 137.5 87.5 4.17 12.5 16.67 20.83 29.17 20.83h66.66c16.67 0 29.17-12.5 29.17-29.16v-4.17c-16.67-91.67-91.67-162.5-187.5-170.83v-100c0-16.67-12.5-29.17-33.33-33.34h-62.5c-16.67 0-29.17 12.5-33.34 33.34v95.83c-125 16.67-204.16 100-204.16 204.17 0 137.5 83.33 191.66 258.33 212.5 116.67 20.83 154.17 45.83 154.17 112.5s-58.34 112.5-137.5 112.5c-108.34 0-145.84-45.84-158.34-108.34-4.16-16.66-16.66-25-29.16-25h-70.84c-16.66 0-29.16 12.5-29.16 29.17v4.17c16.66 104.16 83.33 179.16 220.83 200v100c0 16.66 12.5 29.16 33.33 33.33h62.5c16.67 0 29.17-12.5 33.34-33.33v-100c125-20.84 208.33-108.34 208.33-220.84" />
+                      <path fill="#fff" d="M787.5 1595.83c-325-116.66-491.67-479.16-370.83-800 62.5-175 200-308.33 370.83-370.83 16.67-8.33 25-20.83 25-41.67V325c0-16.67-8.33-29.17-25-33.33-4.17 0-12.5 0-16.67 4.16-395.83 125-612.5 545.84-487.5 941.67 75 233.33 254.17 412.5 487.5 487.5 16.67 8.33 33.34 0 37.5-16.67 4.17-4.16 4.17-8.33 4.17-16.66v-58.34c0-12.5-12.5-29.16-25-37.5m441.67-1300c-16.67-8.33-33.34 0-37.5 16.67-4.17 4.17-4.17 8.33-4.17 16.67v58.33c0 16.67 12.5 33.33 25 41.67 325 116.66 491.67 479.16 370.83 800-62.5 175-200 308.33-370.83 370.83-16.67 8.33-25 20.83-25 41.67V1700c0 16.67 8.33 29.17 25 33.33 4.17 0 12.5 0 16.67-4.16 395.83-125 612.5-545.84 487.5-941.67-75-237.5-258.34-416.67-487.5-491.67" />
+                    </svg>
+                  </div>
+                  <span className="block max-w-[calc(100vw-270px)] truncate lg:max-w-[calc(100vw-895px)]">${balance.toFixed(2)}</span>
+                </span>
+              </div>
+            </div>
+            <div className="ml-4 h-16 w-16 text-dark-200 transition-all duration-200 md:ml-8">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14" className="h-full w-full">
+                <path fillRule="evenodd" d="M6.903 7.74c.053.055.14.055.194 0l3.428-3.494a.543.543 0 0 1 .775 0l.211.216a.543.543 0 0 1 0 .76L7.387 9.426a.543.543 0 0 1-.774 0L2.489 5.222a.543.543 0 0 1 0-.76l.211-.216a.543.543 0 0 1 .775 0z" clipRule="evenodd" />
+              </svg>
+            </div>
           </button>
-          <button className="flex h-[48px] items-center justify-center rounded-8 bg-blue-600 px-24 text-b-lg font-bold text-light-000 transition-colors hover:bg-blue-500">
-            Register
+
+          {/* Wallet Button */}
+          <button className="relative flex h-[48px] flex-row items-center justify-center rounded-8 bg-blue-600 px-[24px] py-8 text-b-lg font-bold text-light-000 outline-none transition-all hover:bg-blue-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50">
+            <span className="flex w-full flex-row items-center justify-center gap-8">
+              <div className="h-16 w-16">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14" className="h-full w-full">
+                  <path fillRule="evenodd" d="M.583 4.273c0-1.716 1.461-3.106 3.264-3.106h6.061c.257 0 .466.198.466.443v1.241H3.712a.57.57 0 0 0-.583.555c0 .306.261.555.583.555h7.072q.028 0 .055-.003h.2c.37 0 .726.14.988.39.263.25.41.588.41.941v.814h-2.75c-.769 0-1.632.554-1.632 1.503v1.579c0 .95.863 1.504 1.632 1.504h2.75v.813a1.3 1.3 0 0 1-.41.941c-.262.25-.618.39-.989.39H1.982c-.371 0-.727-.14-.989-.39a1.3 1.3 0 0 1-.41-.94zm9.104 2.939h3.264c.257 0 .466.177.466.394v1.579c0 .218-.21.395-.466.395H9.687c-.258 0-.466-.177-.466-.395V7.606c0-.217.208-.394.466-.394" clipRule="evenodd" />
+                </svg>
+              </div>
+              Wallet
+            </span>
           </button>
+
+          {/* Profile Button */}
+          <Link href="/account" className="flex-shrink-0">
+            <button className="relative flex h-[48px] flex-row items-center justify-center rounded-8 bg-dark-600 px-[8px] py-8 text-b-lg font-bold text-dark-200 outline-none transition-all hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-600 disabled:text-light-000 disabled:opacity-50 md:px-[12px]">
+              <span className="flex w-full flex-row items-center justify-center gap-8">
+                <div className="relative h-[24px] w-[24px] overflow-hidden rounded-full">
+                  <img
+                    src="https://ui-avatars.com/api/?name=QW&background=5E6EFF&color=fff"
+                    className="absolute inset-0 h-full w-full"
+                    alt="Profile"
+                  />
+                </div>
+              </span>
+            </button>
+          </Link>
         </div>
       </div>
     </div>

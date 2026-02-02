@@ -52,7 +52,6 @@ export interface BlackjackGameState {
   dealerHand: Hand | null;
   playerHands: Hand[];
   activeHandIndex: number;
-  balance: number;
   currentBet: number;
   insuranceBet: number | null;
   result: HandResult;

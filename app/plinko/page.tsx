@@ -32,6 +32,8 @@ export default function PlinkoPage() {
     toggleAutoPlay,
     resultHistory,
     addResult,
+    deductBet,
+    canBet,
   } = usePlinkoGame();
 
   const { currentMultipliers, currentBucketColors } = usePlinkoConfig(risk, rows);
@@ -91,6 +93,15 @@ export default function PlinkoPage() {
     if (!isAutoPlaying) return;
 
     const dropRandomBall = () => {
+      // Check if we can bet before dropping
+      if (!canBet()) {
+        toggleAutoPlay();
+        return;
+      }
+
+      // Deduct bet
+      deductBet();
+
       const path: ('L' | 'R')[] = [];
       for (let i = 0; i < rows; i++) {
         path.push(Math.random() < 0.5 ? 'L' : 'R');
@@ -102,19 +113,25 @@ export default function PlinkoPage() {
     const interval = setInterval(dropRandomBall, 330);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, rows, dropBall]);
+  }, [isAutoPlaying, rows, dropBall, canBet, deductBet, toggleAutoPlay]);
 
   const handleActionClick = useCallback(() => {
     if (betMode === 'auto') {
       toggleAutoPlay();
     } else {
+      // Check if we can bet before dropping
+      if (!canBet()) return;
+
+      // Deduct bet
+      deductBet();
+
       const path: ('L' | 'R')[] = [];
       for (let i = 0; i < rows; i++) {
         path.push(Math.random() < 0.5 ? 'L' : 'R');
       }
       dropBall(path);
     }
-  }, [betMode, rows, dropBall, toggleAutoPlay]);
+  }, [betMode, rows, dropBall, toggleAutoPlay, canBet, deductBet]);
 
   return (
     <GameLayout>

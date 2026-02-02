@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { BetMode } from '@/types';
 import type { MinesGameState, AutoBetConfig, Tile } from '../types';
 import { GRID_SIZE, calculateMultiplier } from '../types';
+import { useBalance } from '@/app/contexts/BalanceContext';
 
 const AUTO_TILE_DELAY = 400; // ms entre chaque révélation de tile
 
@@ -28,7 +29,6 @@ const initialAutoConfig: AutoBetConfig = {
 
 const initialGameState: MinesGameState = {
   phase: 'idle',
-  balance: 1000,
   betAmount: '0.00',
   betMode: 'manual',
   numberOfMines: 3,
@@ -58,6 +58,7 @@ function generateMinePositions(mineCount: number): number[] {
 
 export function useMinesGame() {
   const [gameState, setGameState] = useState<MinesGameState>(initialGameState);
+  const { balance, addBalance, subtractBalance } = useBalance();
   const autoPlayRef = useRef<{ isRunning: boolean; tilesToReveal: number[]; currentIndex: number }>({
     isRunning: false,
     tilesToReveal: [],
@@ -113,6 +114,12 @@ export function useMinesGame() {
   }, []);
 
   const startGame = useCallback(() => {
+    const bet = parseFloat(gameState.betAmount) || 0;
+    if (bet > balance || bet <= 0) return;
+
+    // Deduct bet amount
+    subtractBalance(bet);
+
     setGameState((prev) => {
       const minePositions = generateMinePositions(prev.numberOfMines);
       const newTiles = prev.tiles.map((tile) => ({
@@ -132,7 +139,7 @@ export function useMinesGame() {
         lastPayout: 0,
       };
     });
-  }, []);
+  }, [gameState.betAmount, balance, subtractBalance]);
 
   const revealTile = useCallback((index: number) => {
     setGameState((prev) => {
@@ -211,6 +218,9 @@ export function useMinesGame() {
       const betAmount = parseFloat(prev.betAmount) || 0;
       const payout = betAmount * prev.currentMultiplier;
 
+      // Add payout to balance
+      addBalance(payout);
+
       // Reveal all remaining tiles
       const newTiles = prev.tiles.map((tile) => {
         if (tile.state === 'hidden') {
@@ -238,11 +248,10 @@ export function useMinesGame() {
         phase: 'won',
         tiles: newTiles,
         lastPayout: payout - betAmount,
-        balance: prev.balance + payout,
         resultHistory: [...prev.resultHistory, result],
       };
     });
-  }, []);
+  }, [addBalance]);
 
   const resetGame = useCallback(() => {
     setGameState((prev) => ({
@@ -259,6 +268,12 @@ export function useMinesGame() {
 
   // Start a new game directly (reset + start in one action)
   const restartGame = useCallback(() => {
+    const bet = parseFloat(gameState.betAmount) || 0;
+    if (bet > balance || bet <= 0) return;
+
+    // Deduct bet amount
+    subtractBalance(bet);
+
     setGameState((prev) => {
       const minePositions = generateMinePositions(prev.numberOfMines);
       const newTiles = createInitialTiles().map((tile) => ({
@@ -277,7 +292,7 @@ export function useMinesGame() {
         lastPayout: 0,
       };
     });
-  }, []);
+  }, [gameState.betAmount, balance, subtractBalance]);
 
   // Pick a random unrevealed tile
   const pickRandomTile = useCallback(() => {
@@ -387,9 +402,13 @@ export function useMinesGame() {
 
   // Start auto-bet mode
   const startAutoBet = useCallback(() => {
-    setGameState((prev) => {
-      if (prev.preselectedTiles.length === 0) return prev;
+    const bet = parseFloat(gameState.betAmount) || 0;
+    if (bet > balance || bet <= 0 || gameState.preselectedTiles.length === 0) return;
 
+    // Deduct bet amount
+    subtractBalance(bet);
+
+    setGameState((prev) => {
       const numberOfBets = parseInt(prev.autoConfig.numberOfBets) || Infinity;
       const minePositions = generateMinePositions(prev.numberOfMines);
       const newTiles = createInitialTiles().map((tile) => ({
@@ -416,7 +435,7 @@ export function useMinesGame() {
         lastPayout: 0,
       };
     });
-  }, []);
+  }, [gameState.betAmount, gameState.preselectedTiles.length, balance, subtractBalance]);
 
   // Stop auto-bet mode
   const stopAutoBet = useCallback(() => {
@@ -462,6 +481,9 @@ export function useMinesGame() {
           const betAmount = parseFloat(prev.betAmount) || 0;
           const payout = betAmount * prev.currentMultiplier;
 
+          // Add payout to balance
+          addBalance(payout);
+
           const newTiles = prev.tiles.map((tile) => {
             if (tile.state === 'hidden') {
               const isMine = prev.minePositions.includes(tile.index);
@@ -485,7 +507,6 @@ export function useMinesGame() {
             phase: 'won',
             tiles: newTiles,
             lastPayout: payout - betAmount,
-            balance: prev.balance + payout,
             resultHistory: [...prev.resultHistory, result],
           };
         });
@@ -503,7 +524,11 @@ export function useMinesGame() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [gameState.isAutoPlaying, gameState.phase, gameState.revealedDiamonds, autoRevealNextTile]);
+  }, [gameState.isAutoPlaying, gameState.phase, gameState.revealedDiamonds, autoRevealNextTile, addBalance]);
+
+  // Store balance in a ref to access current value in effects
+  const balanceRef = useRef(balance);
+  balanceRef.current = balance;
 
   // Effect to handle auto-bet continuation after game ends
   useEffect(() => {
@@ -526,9 +551,24 @@ export function useMinesGame() {
       return;
     }
 
+    // Check if we have enough balance for next bet
+    const bet = parseFloat(gameState.betAmount) || 0;
+    if (bet > balanceRef.current) {
+      stopAutoBet();
+      return;
+    }
+
     // Start next round after delay
     timeoutRef.current = setTimeout(() => {
       if (!autoPlayRef.current.isRunning) return;
+
+      // Deduct bet for next round
+      const nextBet = parseFloat(gameState.betAmount) || 0;
+      if (nextBet > balanceRef.current) {
+        stopAutoBet();
+        return;
+      }
+      subtractBalance(nextBet);
 
       setGameState((prev) => {
         const minePositions = generateMinePositions(prev.numberOfMines);
@@ -562,7 +602,7 @@ export function useMinesGame() {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [gameState.isAutoPlaying, gameState.phase, gameState.autoBetsRemaining, gameState.autoProfit, gameState.autoConfig.stopOnProfit, gameState.autoConfig.stopOnLoss, stopAutoBet]);
+  }, [gameState.isAutoPlaying, gameState.phase, gameState.autoBetsRemaining, gameState.autoProfit, gameState.autoConfig.stopOnProfit, gameState.autoConfig.stopOnLoss, gameState.betAmount, stopAutoBet, subtractBalance]);
 
   // Calculated values
   const nextTileMultiplier = useMemo(() => {

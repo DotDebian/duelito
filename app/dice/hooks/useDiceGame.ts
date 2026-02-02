@@ -3,8 +3,7 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type { BetMode } from '@/types';
 import type { DiceGameState, DiceResult, AutoBetConfig, RollMode } from '../types';
-
-const INITIAL_BALANCE = 1000;
+import { useBalance } from '@/app/contexts/BalanceContext';
 const MIN_ROLL_OVER = 2;
 const MAX_ROLL_OVER = 99.98;
 const DEFAULT_ROLL_OVER = 50.05;
@@ -21,7 +20,6 @@ const initialAutoConfig: AutoBetConfig = {
 
 const initialState: DiceGameState = {
   phase: 'idle',
-  balance: INITIAL_BALANCE,
   betAmount: '0.00',
   betMode: 'manual',
 
@@ -43,6 +41,7 @@ function generateResult(): number {
 
 export function useDiceGame() {
   const [gameState, setGameState] = useState<DiceGameState>(initialState);
+  const { balance, addBalance, subtractBalance } = useBalance();
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const initialBetRef = useRef<number>(0);
   const isStoppingRef = useRef(false);
@@ -122,14 +121,21 @@ export function useDiceGame() {
   // Single roll (manual mode)
   const roll = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > gameState.balance) return;
+    if (bet > balance || bet <= 0) return;
 
+    // Deduct bet amount immediately
+    subtractBalance(bet);
     setGameState(prev => ({ ...prev, phase: 'rolling' }));
 
     setTimeout(() => {
       const result = generateResult();
       const isWin = checkWin(result, gameState.rollOver, gameState.rollMode);
       const payout = isWin ? bet * multiplier : 0;
+
+      // Add payout if won
+      if (payout > 0) {
+        addBalance(payout);
+      }
 
       const diceResult: DiceResult = {
         id: crypto.randomUUID(),
@@ -146,11 +152,10 @@ export function useDiceGame() {
         ...prev,
         phase: 'settled',
         currentResult: result,
-        balance: prev.balance - bet + payout,
         resultHistory: [diceResult, ...prev.resultHistory].slice(0, 20),
       }));
     }, 500);
-  }, [gameState.betAmount, gameState.balance, gameState.rollOver, gameState.rollMode, multiplier, checkWin]);
+  }, [gameState.betAmount, balance, gameState.rollOver, gameState.rollMode, multiplier, checkWin, subtractBalance, addBalance]);
 
   // Stop auto play
   const stopAutoPlay = useCallback(() => {
@@ -172,7 +177,7 @@ export function useDiceGame() {
   // Start auto play
   const startAutoPlay = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > gameState.balance) return;
+    if (bet > balance || bet <= 0) return;
 
     initialBetRef.current = bet;
     isStoppingRef.current = false;
@@ -187,7 +192,7 @@ export function useDiceGame() {
       autoProfit: 0,
       phase: 'idle',
     }));
-  }, [gameState.betAmount, gameState.balance, gameState.autoConfig.numberOfBets]);
+  }, [gameState.betAmount, balance, gameState.autoConfig.numberOfBets]);
 
   const toggleAutoPlay = useCallback(() => {
     if (gameState.isAutoPlaying) {
@@ -196,6 +201,10 @@ export function useDiceGame() {
       startAutoPlay();
     }
   }, [gameState.isAutoPlaying, stopAutoPlay, startAutoPlay]);
+
+  // Store balance in a ref to access current value in effects
+  const balanceRef = useRef(balance);
+  balanceRef.current = balance;
 
   // Auto play loop
   useEffect(() => {
@@ -207,7 +216,7 @@ export function useDiceGame() {
 
     // Check stop conditions
     const shouldStop =
-      (bet > gameState.balance) ||
+      (bet > balanceRef.current) ||
       (gameState.autoBetsRemaining !== null && gameState.autoBetsRemaining <= 0) ||
       (stopProfit > 0 && gameState.autoProfit >= stopProfit) ||
       (stopLoss > 0 && gameState.autoProfit <= -stopLoss);
@@ -218,9 +227,15 @@ export function useDiceGame() {
     }
 
     if (gameState.phase === 'idle' || gameState.phase === 'settled') {
-      // Start rolling
+      // Start rolling - deduct bet
       autoPlayRef.current = setTimeout(() => {
         if (isStoppingRef.current) return;
+        const currentBet = parseFloat(gameState.betAmount) || 0;
+        if (currentBet > balanceRef.current) {
+          stopAutoPlay();
+          return;
+        }
+        subtractBalance(currentBet);
         setGameState(prev => ({ ...prev, phase: 'rolling' }));
       }, 100);
     } else if (gameState.phase === 'rolling') {
@@ -238,6 +253,11 @@ export function useDiceGame() {
             : 100 / prev.rollOver;
           const payout = isWin ? currentBet * currentMultiplier : 0;
           const profit = payout - currentBet;
+
+          // Add payout if won
+          if (payout > 0) {
+            addBalance(payout);
+          }
 
           const diceResult: DiceResult = {
             id: crypto.randomUUID(),
@@ -272,7 +292,6 @@ export function useDiceGame() {
             ...prev,
             phase: 'settled',
             currentResult: result,
-            balance: prev.balance - currentBet + payout,
             betAmount: newBetAmount.toFixed(2),
             resultHistory: [diceResult, ...prev.resultHistory].slice(0, 20),
             autoBetsRemaining: prev.autoBetsRemaining !== null ? prev.autoBetsRemaining - 1 : null,
@@ -288,7 +307,7 @@ export function useDiceGame() {
         autoPlayRef.current = null;
       }
     };
-  }, [gameState.isAutoPlaying, gameState.phase, gameState.betAmount, gameState.balance, gameState.autoBetsRemaining, gameState.autoProfit, gameState.autoConfig, stopAutoPlay, checkWin]);
+  }, [gameState.isAutoPlaying, gameState.phase, gameState.betAmount, gameState.autoBetsRemaining, gameState.autoProfit, gameState.autoConfig, stopAutoPlay, checkWin, subtractBalance, addBalance]);
 
   // Cleanup on unmount
   useEffect(() => {
