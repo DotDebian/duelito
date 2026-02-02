@@ -44,7 +44,7 @@ export function Sidebar() {
         }`}
       >
         {/* Inner wrapper to maintain content width during animation */}
-        <div className="flex h-full w-[400px] flex-shrink-0 flex-col">
+        <div className="flex h-full w-[400px] flex-shrink-0 flex-col px-16 pb-16">
           {/* Top gradient (mobile) */}
           <div className="absolute top-0 z-10 h-[12px] w-full bg-gradient-to-t from-transparent to-dark-900 lg:hidden" />
 

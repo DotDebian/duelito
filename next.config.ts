@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'duel.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        pathname: '/**',
+      },
     ],
   },
 };
