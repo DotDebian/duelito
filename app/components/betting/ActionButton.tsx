@@ -6,7 +6,7 @@ interface ActionButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   disabled?: boolean;
-  variant?: 'primary' | 'success';
+  variant?: 'primary' | 'success' | 'secondary';
   children: React.ReactNode;
 }
 
@@ -20,6 +20,7 @@ export const ActionButton = memo(function ActionButton({
   const variantClasses = {
     primary: 'bg-blue-600 hover:bg-blue-500',
     success: 'bg-green-600 hover:bg-green-500',
+    secondary: 'bg-dark-400 hover:bg-dark-300',
   };
 
   return (

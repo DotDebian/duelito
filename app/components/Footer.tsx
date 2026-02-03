@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#1f222d] bg-[#0c1019] px-4 py-12 md:px-8">
-      <div className="mx-auto max-w-6xl">
+    <footer className="bg-dark-800 z-10 flex flex-col justify-between gap-32 pt-32 mx-auto w-full max-w-[1324px] transition-all duration-200 p-16 md:p-32">
+      <div className="mx-auto">
         {/* Links Grid */}
         <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* About */}
