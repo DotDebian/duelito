@@ -171,6 +171,23 @@ const config: Config = {
         '64': '64px',
         '128': '128px',
       },
+      keyframes: {
+        'flip-tile': {
+          '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(180deg)' },
+        },
+        'cow-jump': {
+          '0%': { transform: 'translate(0, 0)' },
+          '25%': { transform: 'translate(-8px, -20px)' },
+          '50%': { transform: 'translate(0, -30px)' },
+          '75%': { transform: 'translate(4px, -20px)' },
+          '100%': { transform: 'translate(0, 0)' },
+        },
+      },
+      animation: {
+        'flip-tile': 'flip-tile 300ms ease-in-out forwards',
+        'cow-jump': 'cow-jump 500ms ease-in-out',
+      },
     },
   },
   plugins: [],
