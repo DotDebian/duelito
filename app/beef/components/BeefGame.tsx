@@ -56,7 +56,7 @@ export const BeefGame = memo(function BeefGame() {
         currentMultiplier={gameState.currentMultiplier}
         potentialPayout={gameState.potentialPayout}
         resultHistory={gameState.resultHistory}
-        betAmount={gameState.betAmount}
+        betAmount={parseFloat(gameState.betAmount) || 0}
         onJump={jump}
       />
     </div>
