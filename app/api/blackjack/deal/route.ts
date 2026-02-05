@@ -8,15 +8,31 @@ export async function POST(request: Request) {
 
   const deck = shuffleDeck(createDeck());
 
-  // Deal: player gets 1st and 3rd, dealer gets 2nd (up) and 4th (down)
+  // TEMP: Force player to get a pair for Double testing
+  // Find two cards with the same rank for the player
+  const usedIndices = new Set<number>();
+  const targetRank = deck[0].rank;
+  const firstCardIndex = 0;
+  usedIndices.add(firstCardIndex);
+
+  // Find another card with the same rank
+  let secondCardIndex = deck.findIndex((c, i) => i !== firstCardIndex && c.rank === targetRank);
+  if (secondCardIndex === -1) secondCardIndex = 1; // Fallback
+  usedIndices.add(secondCardIndex);
+
+  // Find cards for dealer that aren't used
+  let dealerCard1Index = deck.findIndex((_, i) => !usedIndices.has(i));
+  usedIndices.add(dealerCard1Index);
+  let dealerCard2Index = deck.findIndex((_, i) => !usedIndices.has(i));
+
   const playerCards: Card[] = [
-    { ...deck[0], faceUp: true },
-    { ...deck[2], faceUp: true },
+    { ...deck[firstCardIndex], faceUp: true },
+    { ...deck[secondCardIndex], faceUp: true },
   ];
 
   const dealerCards: Card[] = [
-    { ...deck[1], faceUp: true },
-    { ...deck[3], faceUp: false },
+    { ...deck[dealerCard1Index], faceUp: true },
+    { ...deck[dealerCard2Index], faceUp: false },
   ];
 
   const playerHasBlackjack = isBlackjack(playerCards);

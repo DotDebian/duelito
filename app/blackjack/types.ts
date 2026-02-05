@@ -36,14 +36,17 @@ export interface CardAnimationState {
   targetIndex: number;
   shouldFlip: boolean;
   isExit?: boolean;
+  handOffsetX?: number;
 }
 
 export interface CardToAnimate {
   card: Card;
   targetHand: 'player' | 'dealer';
   targetIndex: number;
+  totalCardsInHand?: number;
   shouldFlip: boolean;
   delay: number;
+  handOffsetX?: number;
 }
 
 export interface BlackjackGameState {
@@ -55,5 +58,6 @@ export interface BlackjackGameState {
   currentBet: number;
   insuranceBet: number | null;
   result: HandResult;
+  resultsPerHand: HandResult[];
   payout: number;
 }

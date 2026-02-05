@@ -17,6 +17,9 @@ export default function BlackjackPage() {
   // Track previous cards to detect new ones
   const prevPlayerCardsRef = useRef<Card[]>([]);
   const prevDealerCardsRef = useRef<Card[]>([]);
+  const prevHandCountRef = useRef<number>(0);
+  // Track all player card IDs across all hands
+  const prevAllPlayerCardIdsRef = useRef<Set<string>>(new Set());
 
   const {
     gameState,
@@ -49,22 +52,30 @@ export default function BlackjackPage() {
     clearAnimations();
     prevPlayerCardsRef.current = [];
     prevDealerCardsRef.current = [];
+    prevHandCountRef.current = 0;
+    prevAllPlayerCardIdsRef.current = new Set();
     originalNewGame();
   }, [originalNewGame, clearAnimations]);
 
   // Wrapped deal that handles exit animation for previous cards
   const deal = useCallback(() => {
-    const currentPlayerCards = gameState.playerHands[0]?.cards ?? [];
+    // Collect cards from ALL player hands (for split support)
+    const allPlayerCards: Card[] = [];
+    gameState.playerHands.forEach(hand => {
+      allPlayerCards.push(...hand.cards);
+    });
     const currentDealerCards = gameState.dealerHand?.cards ?? [];
 
     // If there are existing cards (from previous game), animate them out first
-    if (currentPlayerCards.length > 0 || currentDealerCards.length > 0) {
-      const exitSequence = createExitAnimationSequence(currentPlayerCards, currentDealerCards);
+    if (allPlayerCards.length > 0 || currentDealerCards.length > 0) {
+      const exitSequence = createExitAnimationSequence(allPlayerCards, currentDealerCards);
       queueExitAnimation(exitSequence, () => {
         // After exit animation, reset everything and start fresh
         clearAnimations();
         prevPlayerCardsRef.current = [];
         prevDealerCardsRef.current = [];
+        prevHandCountRef.current = 0;
+        prevAllPlayerCardIdsRef.current = new Set();
         originalNewGame();
         // Small delay to ensure state is reset before dealing
         setTimeout(() => {
@@ -78,31 +89,84 @@ export default function BlackjackPage() {
 
   // Watch for card changes and trigger animations
   useLayoutEffect(() => {
+    const currentHandCount = gameState.playerHands.length;
+    const prevHandCount = prevHandCountRef.current;
     const currentPlayerCards = gameState.playerHands[0]?.cards ?? [];
     const currentDealerCards = gameState.dealerHand?.cards ?? [];
     const prevPlayerCards = prevPlayerCardsRef.current;
     const prevDealerCards = prevDealerCardsRef.current;
 
-    // Check if this is initial deal (going from 0 cards to multiple)
-    if (prevPlayerCards.length === 0 && currentPlayerCards.length >= 2 &&
+    // Detect split: 1 hand became 2 hands
+    const isSplit = prevHandCount === 1 && currentHandCount === 2;
+
+    console.log('Animation check:', {
+      prevHandCount,
+      currentHandCount,
+      isSplit,
+      prevPlayerCardsLen: prevPlayerCards.length,
+      currentPlayerCardsLen: currentPlayerCards.length,
+      prevDealerCardsLen: prevDealerCards.length,
+      currentDealerCardsLen: currentDealerCards.length,
+    });
+
+    if (isSplit) {
+      // For split: animate the NEW cards dealt to each hand (2nd card of each hand)
+      // The original cards just appear in their new positions
+      // IMPORTANT: At split time, playerRef is still at center (CSS transition hasn't completed)
+      // So we use absolute offsets from center, not relative to playerRef's final position
+      const SPLIT_HAND_0_OFFSET = -155; // Main 0 target: -155px from center
+      const SPLIT_HAND_1_OFFSET = 155;  // Main 1 target: +155px from center
+
+      const hand0NewCard = gameState.playerHands[0]?.cards[1];
+      const hand1NewCard = gameState.playerHands[1]?.cards[1];
+
+      let delay = 0;
+      if (hand0NewCard) {
+        const sequence = createHitAnimationSequence(hand0NewCard, 'player', 1, true);
+        sequence[0].delay = delay;
+        sequence[0].handOffsetX = SPLIT_HAND_0_OFFSET;
+        sequence[0].totalCardsInHand = 2;
+        queueAnimation(sequence);
+        delay += 400;
+      }
+      if (hand1NewCard) {
+        const sequence = createHitAnimationSequence(hand1NewCard, 'player', 1, true);
+        sequence[0].delay = delay;
+        sequence[0].handOffsetX = SPLIT_HAND_1_OFFSET;
+        sequence[0].totalCardsInHand = 2;
+        queueAnimation(sequence);
+      }
+    } else if (prevPlayerCards.length === 0 && currentPlayerCards.length >= 2 &&
         prevDealerCards.length === 0 && currentDealerCards.length >= 2) {
+      // Check if this is initial deal (going from 0 cards to multiple)
       // Initial deal animation
       const sequence = createDealAnimationSequence(currentPlayerCards, currentDealerCards);
       queueAnimation(sequence);
     } else {
-      // Check for new player cards (hit)
-      if (currentPlayerCards.length > prevPlayerCards.length) {
-        const newCards = currentPlayerCards.slice(prevPlayerCards.length);
-        newCards.forEach((card, i) => {
-          const sequence = createHitAnimationSequence(
-            card,
-            'player',
-            prevPlayerCards.length + i,
-            true
-          );
-          queueAnimation(sequence);
+      // Check for new player cards (hit) in any hand
+      // playerRef points to hand 0 which is at -155px from center
+      // Hand 0: offset 0 (playerRef is already there)
+      // Hand 1: offset 310 (distance from hand 0 at -155px to hand 1 at +155px)
+      const SPLIT_HAND_0_OFFSET = 0;
+      const SPLIT_HAND_1_OFFSET = 310;
+      const prevAllCardIds = prevAllPlayerCardIdsRef.current;
+
+      // For each hand, check for new cards
+      gameState.playerHands.forEach((hand, handIndex) => {
+        const totalCardsInHand = hand.cards.length;
+        hand.cards.forEach((card, cardIndex) => {
+          if (!prevAllCardIds.has(card.id)) {
+            // New card detected - animate it
+            const sequence = createHitAnimationSequence(card, 'player', cardIndex, true);
+            sequence[0].totalCardsInHand = totalCardsInHand;
+            // Apply offset for split hands (relative to playerRef which is hand 0)
+            if (currentHandCount > 1) {
+              sequence[0].handOffsetX = handIndex === 0 ? SPLIT_HAND_0_OFFSET : SPLIT_HAND_1_OFFSET;
+            }
+            queueAnimation(sequence);
+          }
         });
-      }
+      });
 
       // Check for new dealer cards (dealer turn)
       if (currentDealerCards.length > prevDealerCards.length) {
@@ -122,7 +186,14 @@ export default function BlackjackPage() {
     // Update refs immediately
     prevPlayerCardsRef.current = currentPlayerCards;
     prevDealerCardsRef.current = currentDealerCards;
-  }, [gameState.playerHands, gameState.dealerHand, queueAnimation]);
+    prevHandCountRef.current = currentHandCount;
+    // Update all player card IDs
+    const allCardIds = new Set<string>();
+    gameState.playerHands.forEach(hand => {
+      hand.cards.forEach(card => allCardIds.add(card.id));
+    });
+    prevAllPlayerCardIdsRef.current = allCardIds;
+  }, [gameState.playerHands, gameState.dealerHand, gameState.activeHandIndex, queueAnimation]);
 
   const showResult = gameState.phase === 'settled';
 
@@ -162,9 +233,11 @@ export default function BlackjackPage() {
           playerHands={gameState.playerHands}
           activeHandIndex={gameState.activeHandIndex}
           result={gameState.result}
+          resultsPerHand={gameState.resultsPerHand}
           showResult={showResult}
           betAmount={parseFloat(betAmount) || 0}
           payout={gameState.payout}
+          insuranceBet={gameState.insuranceBet}
           animatingCards={animatingCards}
           animatingCardIds={animatingCardIds}
           deckRef={deckRef}

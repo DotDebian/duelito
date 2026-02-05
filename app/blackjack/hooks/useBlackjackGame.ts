@@ -14,6 +14,7 @@ const initialState: BlackjackGameState = {
   currentBet: 0,
   insuranceBet: null,
   result: null,
+  resultsPerHand: [],
   payout: 0,
 };
 
@@ -133,6 +134,7 @@ export function useBlackjackGame() {
           playerHands: data.playerHands,
           phase: 'settled',
           result: data.result,
+          resultsPerHand: data.resultsPerHand ?? [data.result],
           payout: data.payout,
         }));
       } else {
@@ -208,6 +210,7 @@ export function useBlackjackGame() {
         }),
       });
       const data = await response.json();
+      console.log('Split response - activeHandIndex:', data.activeHandIndex);
 
       setGameState(prev => ({
         ...prev,

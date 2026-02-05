@@ -67,17 +67,31 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
     targetHand: 'player' | 'dealer',
     targetIndex: number,
     container: HTMLElement | null,
-    targetRef: HTMLElement | null
+    targetRef: HTMLElement | null,
+    handOffsetX: number = 0,
+    totalCardsInHand?: number
   ): { x: number; y: number } => {
     const basePos = getPosition(targetRef, container);
 
-    // Offset based on card index (stacking effect)
-    const offsetX = targetHand === 'dealer'
-      ? targetIndex * 25 // Match dealer hand stacking
-      : targetIndex * 28; // Match player hand stacking
+    // Get card width from ref for percentage calculations
+    const cardWidth = targetRef?.getBoundingClientRect().width ?? 80;
+
+    let offsetX: number;
+    if (targetHand === 'dealer') {
+      // Dealer cards: simple stacking at 33% per card
+      offsetX = targetIndex * (cardWidth * 0.33);
+    } else {
+      // Player cards: match Hand.tsx calculation
+      // offset = index * 36% - centering
+      // centering = 35 * (totalCards - 1) / 2 %
+      const totalCards = totalCardsInHand ?? (targetIndex + 1);
+      const cardOffset = targetIndex * 36; // percentage
+      const centeringOffset = 35 * (totalCards - 1) / 2; // percentage
+      offsetX = (cardOffset - centeringOffset) * (cardWidth / 100);
+    }
 
     return {
-      x: basePos.x + offsetX,
+      x: basePos.x + offsetX + handOffsetX,
       y: basePos.y,
     };
   }, [getPosition]);
@@ -111,7 +125,9 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
         cardToAnimate.targetHand,
         cardToAnimate.targetIndex,
         container,
-        targetRef
+        targetRef,
+        cardToAnimate.handOffsetX ?? 0,
+        cardToAnimate.totalCardsInHand
       );
 
       return {
@@ -125,6 +141,7 @@ export function useCardAnimation(refs: AnimationRefs): UseCardAnimationReturn {
         targetHand: cardToAnimate.targetHand,
         targetIndex: cardToAnimate.targetIndex,
         shouldFlip: cardToAnimate.shouldFlip,
+        handOffsetX: cardToAnimate.handOffsetX,
       };
     });
 

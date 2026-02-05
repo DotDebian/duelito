@@ -11,6 +11,7 @@ interface CardProps {
   isLoser?: boolean;
   isPush?: boolean;
   isDealer?: boolean;
+  isActive?: boolean;
   delay?: number;
   isHidden?: boolean;
   flipDirection?: 'horizontal' | 'vertical';
@@ -54,14 +55,15 @@ function SuitIcon({ suit, size }: SuitIconProps) {
   }
 }
 
-export const Card = memo(function Card({ card, isWinner, isLoser, isPush, isDealer, delay = 0, isHidden = false, flipDirection = 'horizontal' }: CardProps) {
+export const Card = memo(function Card({ card, isWinner, isLoser, isPush, isDealer, isActive, delay = 0, isHidden = false, flipDirection = 'horizontal' }: CardProps) {
   const isRed = isRedSuit(card.suit);
   const textColor = isRed ? 'text-red-500' : 'text-dark-900';
 
   // Only player cards get colored borders
   let borderColor = 'border-light-000';
   if (!isDealer) {
-    if (isWinner) borderColor = 'border-green-500';
+    if (isActive) borderColor = 'border-blue-500';
+    else if (isWinner) borderColor = 'border-green-500';
     else if (isLoser) borderColor = 'border-red-500';
     else if (isPush) borderColor = 'border-yellow-500';
   }

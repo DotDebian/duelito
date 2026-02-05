@@ -7,15 +7,21 @@ import { Card } from './Card';
 interface HandProps {
   hand: HandType;
   isDealer?: boolean;
+  isActive?: boolean;
+  isSplit?: boolean;
   result?: HandResult;
   showResult?: boolean;
   hiddenCardIds?: Set<string>;
 }
 
-export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hiddenCardIds = new Set() }: HandProps) {
+export const Hand = memo(function Hand({ hand, isDealer, isActive, isSplit, result, showResult, hiddenCardIds = new Set() }: HandProps) {
   const isWinner = showResult && (result === 'win' || result === 'blackjack');
-  const isLoser = showResult && result === 'lose';
+  // Show loss immediately when busted (even before game ends)
+  const isLoser = (showResult && result === 'lose') || hand.isBusted;
   const isPush = showResult && result === 'push';
+
+  // Show active border on cards only for split hands (not if busted)
+  const showActiveOnCards = isSplit && isActive && !showResult && !hand.isBusted;
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
@@ -44,6 +50,7 @@ export const Hand = memo(function Hand({ hand, isDealer, result, showResult, hid
               isLoser={isLoser}
               isPush={isPush}
               isDealer={isDealer}
+              isActive={showActiveOnCards}
               delay={index * 150}
               isHidden={hiddenCardIds.has(card.id)}
               flipDirection={isDealer ? 'horizontal' : 'vertical'}

@@ -9,16 +9,28 @@ interface ScoreBadgeProps {
   result?: HandResult;
   showResult?: boolean;
   isDealer?: boolean;
+  isActive?: boolean;
+  isBusted?: boolean;
 }
 
-export const ScoreBadge = memo(function ScoreBadge({ cards, result, showResult, isDealer = false }: ScoreBadgeProps) {
+export const ScoreBadge = memo(function ScoreBadge({ cards, result, showResult, isDealer = false, isActive = false, isBusted = false }: ScoreBadgeProps) {
   const value = formatHandValue(cards);
 
   let bgColor = 'bg-dark-400';
   let textColor = 'text-light-000';
 
-  // Only player badge changes color
-  if (showResult && !isDealer) {
+  // Busted hand immediately shows red (even before game ends)
+  if (isBusted && !isDealer) {
+    bgColor = 'bg-red-500';
+    textColor = 'text-dark-900';
+  }
+  // Active split hand gets blue background
+  else if (isActive && !showResult) {
+    bgColor = 'bg-blue-500';
+    textColor = 'text-light-000';
+  }
+  // Only player badge changes color on result
+  else if (showResult && !isDealer) {
     if (result === 'win' || result === 'blackjack') {
       bgColor = 'bg-green-500';
       textColor = 'text-dark-900';

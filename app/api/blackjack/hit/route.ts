@@ -38,13 +38,14 @@ export async function POST(request: Request) {
   console.log('Is busted:', currentHand.isBusted);
 
   if (currentHand.isBusted || handValue === 21) {
-    // Move to next hand or dealer turn
-    const nextHandIndex = updatedHands.findIndex(
-      (h, i) => i > activeHandIndex && !h.isStood && !h.isBusted
+    // For split hands: play right to left (index 1 -> 0)
+    // Find any playable hand (not stood, not busted)
+    const playableHandIndex = updatedHands.findIndex(
+      (h, i) => i !== activeHandIndex && !h.isStood && !h.isBusted
     );
 
-    if (nextHandIndex !== -1) {
-      newActiveIndex = nextHandIndex;
+    if (playableHandIndex !== -1) {
+      newActiveIndex = playableHandIndex;
     } else {
       phase = 'dealer_turn';
     }

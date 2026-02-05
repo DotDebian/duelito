@@ -23,8 +23,9 @@ export async function POST(request: Request) {
   });
 
   // Check if there are more hands to play
+  // For split: right to left (find any playable hand)
   const nextHandIndex = updatedPlayerHands.findIndex(
-    (h, i) => i > activeHandIndex && !h.isStood && !h.isBusted
+    (h, i) => i !== activeHandIndex && !h.isStood && !h.isBusted
   );
 
   if (nextHandIndex !== -1) {

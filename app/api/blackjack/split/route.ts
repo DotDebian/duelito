@@ -45,20 +45,26 @@ export async function POST(request: Request) {
     ...playerHands.slice(activeHandIndex + 1),
   ];
 
-  // Find next playable hand
-  let newActiveIndex = activeHandIndex;
-  if (hand1.isStood) {
-    const nextIndex = updatedHands.findIndex(
-      (h, i) => i > activeHandIndex && !h.isStood && !h.isBusted
-    );
-    if (nextIndex !== -1) {
-      newActiveIndex = nextIndex;
+  // Start with the RIGHT hand (index 1 after split)
+  // In blackjack, you play the rightmost hand first
+  const rightHandIndex = activeHandIndex + 1;
+  let newActiveIndex = rightHandIndex;
+
+  // If right hand already stood (blackjack), move to left hand
+  if (hand2.isStood) {
+    if (!hand1.isStood && !hand1.isBusted) {
+      newActiveIndex = activeHandIndex;
     }
   }
 
   // Check if all hands are done
   const allDone = updatedHands.every(h => h.isStood || h.isBusted);
   const phase = allDone ? 'dealer_turn' : 'player_turn';
+
+  console.log('=== SPLIT ===');
+  console.log('Created hands:', updatedHands.length);
+  console.log('Active hand index (should be 1 for right hand):', newActiveIndex);
+  console.log('=============');
 
   return NextResponse.json({
     playerHands: updatedHands,
