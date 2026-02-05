@@ -19,7 +19,7 @@ const initialState: BlackjackGameState = {
 
 export function useBlackjackGame() {
   const [gameState, setGameState] = useState<BlackjackGameState>(initialState);
-  const [betAmount, setBetAmount] = useState('10.00');
+  const [betAmount, setBetAmount] = useState('0.00');
   const [isLoading, setIsLoading] = useState(false);
   const { balance, addBalance, subtractBalance } = useBalance();
 

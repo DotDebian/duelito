@@ -106,7 +106,7 @@ export const DiceSlider = memo(function DiceSlider({
         />
         {/* Green zone (win) */}
         <div
-          className="absolute top-0 h-full bg-green-500"
+          className="absolute top-0 h-full bg-green-600"
           style={{
             left: isOverMode ? `${position}%` : '0%',
             width: isOverMode ? `${100 - position}%` : `${position}%`,

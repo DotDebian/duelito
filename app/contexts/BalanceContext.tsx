@@ -1,8 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-const BALANCE_KEY = 'duelito_balance';
 const DEFAULT_BALANCE = 100;
 
 interface BalanceContextType {
@@ -17,26 +16,6 @@ const BalanceContext = createContext<BalanceContextType | null>(null);
 
 export function BalanceProvider({ children }: { children: ReactNode }) {
   const [balance, setBalanceState] = useState<number>(DEFAULT_BALANCE);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  // Load balance from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem(BALANCE_KEY);
-    if (stored !== null) {
-      const parsed = parseFloat(stored);
-      if (!isNaN(parsed)) {
-        setBalanceState(parsed);
-      }
-    }
-    setIsHydrated(true);
-  }, []);
-
-  // Save balance to localStorage whenever it changes
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(BALANCE_KEY, balance.toString());
-    }
-  }, [balance, isHydrated]);
 
   const addBalance = useCallback((amount: number) => {
     setBalanceState(prev => {

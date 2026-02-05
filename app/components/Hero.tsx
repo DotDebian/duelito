@@ -97,7 +97,7 @@ export function Hero() {
           <div className="z-30 w-full transition-all duration-700">
             <div className="flex flex-col items-center">
               <DuelOriginalsLogo />
-              <div className="z-0 flex max-w-[1024px] flex-wrap items-center justify-center gap-8 overflow-hidden px-8 sm:px-16 md:gap-16 md:px-32">
+            <div className="z-0 flex max-w-[1024px] flex-wrap items-center justify-center gap-8 overflow-hidden px-8 sm:px-16 md:gap-16 md:px-32">
                 {games.map((game) => (
                   <HeroGameCard key={game.id} game={game} />
                 ))}

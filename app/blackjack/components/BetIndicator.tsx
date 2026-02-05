@@ -20,7 +20,7 @@ export const BetIndicator = memo(function BetIndicator({
 }: BetIndicatorProps) {
   // Position Y: 94% before playing, 76% when playing/won, 30% when lost
   const isLost = showResult && result === 'lose';
-  const topPercent = !hasStarted ? 94 : (isLost ? 30 : 76);
+  const topPercent = !hasStarted ? 100 : (isLost ? 30 : 76);
 
   // Show bet during play, payout when settled
   const displayAmount = showResult ? payout : betAmount;

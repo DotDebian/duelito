@@ -160,7 +160,7 @@ export const CrashControls = memo(function CrashControls({
   const isButtonDisabled = !canBet && !canCashout && !canCancelBet;
 
   return (
-    <div className="flex w-[380px] shrink-0 flex-col gap-16 overflow-y-auto rounded-12 rounded-r-none bg-dark-700 p-32 scrollbar-none">
+    <div className="flex w-[380px] shrink-0 flex-col gap-16 overflow-y-auto rounded-12 rounded-r-none bg-dark-700 p-32 scrollbar-hidden">
       <div>
         <BetModeSelector
           value={betMode}

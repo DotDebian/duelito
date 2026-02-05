@@ -115,7 +115,7 @@ export function useMinesGame() {
 
   const startGame = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0) return;
+    if (bet > balance || bet < 0) return;
 
     // Deduct bet amount
     subtractBalance(bet);
@@ -269,7 +269,7 @@ export function useMinesGame() {
   // Start a new game directly (reset + start in one action)
   const restartGame = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0) return;
+    if (bet > balance || bet < 0) return;
 
     // Deduct bet amount
     subtractBalance(bet);
@@ -403,7 +403,7 @@ export function useMinesGame() {
   // Start auto-bet mode
   const startAutoBet = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0 || gameState.preselectedTiles.length === 0) return;
+    if (bet > balance || bet < 0 || gameState.preselectedTiles.length === 0) return;
 
     // Deduct bet amount
     subtractBalance(bet);

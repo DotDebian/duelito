@@ -49,8 +49,10 @@ export const MinesTile = memo(function MinesTile({
       case 'preselected':
         return 'bg-blue-600';
       case 'diamond-clicked':
-        return 'bg-[#091c2a]';
+        // Vert seulement après cashout (game won), sinon neutre
+        return isGameOver ? 'bg-[#091c2a]' : 'bg-dark-700';
       case 'diamond':
+        return 'bg-dark-700';
       case 'mine':
         return 'bg-dark-700';
       case 'mine-exploded':
@@ -65,7 +67,10 @@ export const MinesTile = memo(function MinesTile({
   const getBorderClass = () => {
     switch (tile.state) {
       case 'diamond-clicked':
-        return 'border-green-700';
+        // Bordure verte seulement après cashout (game won)
+        return isGameOver ? 'border-green-700' : 'border-transparent';
+      case 'diamond':
+        return 'border-transparent';
       case 'mine-exploded':
         return 'border-red-600';
       default:
@@ -74,7 +79,7 @@ export const MinesTile = memo(function MinesTile({
   };
 
   const getOpacityClass = () => {
-    if (isGameOver && !tile.isClickedByPlayer && tile.state !== 'mine-exploded') {
+    if (phase == "lost" && tile.state !== 'mine-exploded') {
       return 'opacity-60';
     }
     return '';
@@ -119,7 +124,7 @@ export const MinesTile = memo(function MinesTile({
         );
       case 'mine':
         return (
-          <div className="animate-reveal relative size-[32%]">
+          <div className="animate-reveal relative size-[50%]">
             <Image
               src="/images/mines/bomb.png"
               alt="Mine"

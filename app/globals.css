@@ -18,6 +18,7 @@
 
 html {
   font-family: 'TT-Interphases-Pro', system-ui, sans-serif;
+  scrollbar-color: #767FAA transparent;
 }
 
 body {
@@ -44,6 +45,16 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #3d4150;
+}
+
+/* Hidden scrollbar (still scrollable) */
+.scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
 
 /* Chat scrollbar */
