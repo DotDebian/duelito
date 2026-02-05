@@ -155,7 +155,7 @@ export const BeefControls = memo(function BeefControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onWin: 'reset' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ml-1 ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ml-1 ${
                   autoConfig.onWin === 'reset'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -167,7 +167,7 @@ export const BeefControls = memo(function BeefControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onWin: 'increase' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ${
                   autoConfig.onWin === 'increase'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -197,7 +197,7 @@ export const BeefControls = memo(function BeefControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onLoss: 'reset' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ml-1 ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ml-1 ${
                   autoConfig.onLoss === 'reset'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -209,7 +209,7 @@ export const BeefControls = memo(function BeefControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onLoss: 'increase' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ${
                   autoConfig.onLoss === 'increase'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -323,7 +323,7 @@ export const BeefControls = memo(function BeefControls({
             disabled={!canCashout}
             className={`w-full h-[48px] mt-12 rounded-8 font-bold text-b-lg transition-all active:scale-95 ${
               canCashout
-                ? 'bg-blue-600 text-light-000 hover:bg-blue-500'
+                ? 'bg-blue-600 text-light-000 hover:bg-blue-500 cursor-pointer'
                 : 'bg-dark-500 text-dark-300 cursor-not-allowed'
             }`}
           >

@@ -34,7 +34,7 @@ export const NumberOfBetsInput = memo(function NumberOfBetsInput({
             type="button"
             onClick={() => onChange('∞')}
             disabled={disabled}
-            className="absolute right-8 top-8 flex h-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] py-8 text-h-md font-semibold text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="absolute right-8 top-8 flex h-[32px] cursor-pointer items-center justify-center rounded-8 bg-dark-400 px-[10px] py-8 text-h-md font-semibold text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             <span className="flex items-center justify-center gap-4">∞</span>
           </button>

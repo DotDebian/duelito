@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useState, useRef, useEffect } from 'react';
 import type { BetMode } from '@/types';
 import type { AutoBetConfig, MinesPhase } from '../types';
 import { MINES_OPTIONS } from '../types';
@@ -38,6 +38,68 @@ const CurrencyIcon = () => (
     <path fill="#fff" d="M6.927 11.705a.2.2 0 0 1-.2-.2V2.45c0-.11.09-.2.2-.2h.206c.11 0 .2.09.2.2v9.055a.2.2 0 0 1-.2.2zm1.727-6.43c-.103 0-.186-.078-.212-.177a1 1 0 0 0-.404-.577q-.381-.27-.99-.27-.428 0-.735.13-.306.13-.469.35a.85.85 0 0 0-.059.917 1 1 0 0 0 .3.295q.188.118.417.2t.461.136l.71.178q.428.099.823.27.398.168.713.428.317.258.502.624.185.365.185.857 0 .665-.34 1.17-.34.502-.982.787-.639.28-1.548.28-.883 0-1.533-.273a2.3 2.3 0 0 1-1.012-.797 2.3 2.3 0 0 1-.376-1.07.19.19 0 0 1 .193-.208h.954c.105 0 .19.08.211.184q.056.274.219.473.214.262.557.392.348.129.776.129.447 0 .783-.133a1.27 1.27 0 0 0 .532-.377.9.9 0 0 0 .196-.569.72.72 0 0 0-.174-.487 1.3 1.3 0 0 0-.476-.325 4.6 4.6 0 0 0-.71-.236l-.86-.222q-.934-.24-1.477-.728-.54-.491-.54-1.303 0-.669.362-1.171.366-.502.994-.78.627-.28 1.422-.28.805 0 1.41.28a2.3 2.3 0 0 1 .957.773q.291.411.346.927a.187.187 0 0 1-.191.203z" />
   </svg>
 );
+
+// Custom Mines Select dropdown
+interface MinesSelectProps {
+  value: number;
+  onChange: (value: number) => void;
+  disabled?: boolean;
+}
+
+function MinesSelect({ value, onChange, disabled }: MinesSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        type="button"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className="h-[48px] w-full cursor-pointer appearance-none rounded-8 bg-dark-600 px-[12px] pr-[36px] text-left text-h-sm font-semibold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled):hover]:outline-dark-400 [&:not(:disabled):focus]:outline-dark-400"
+      >
+        {value}
+      </button>
+      <div className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-dark-300">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+      {isOpen && (
+        <ul
+          role="listbox"
+          tabIndex={0}
+          className="scrollbar absolute left-0 top-[54px] z-50 max-h-[15rem] w-full overflow-y-auto rounded-8 border border-dark-400 bg-dark-400 focus:outline-none"
+        >
+          {MINES_OPTIONS.map((n) => (
+            <li
+              key={n}
+              role="option"
+              aria-selected={value === n}
+              onClick={() => {
+                onChange(n);
+                setIsOpen(false);
+              }}
+              className="min-h-[40px] cursor-pointer bg-dark-400 px-[12px] py-8 text-b-md font-semibold text-light-000 hover:bg-dark-300"
+            >
+              {n}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export const MinesControls = memo(function MinesControls({
   betMode,
@@ -82,24 +144,12 @@ export const MinesControls = memo(function MinesControls({
           <div className="mb-16 flex gap-16">
             <div className="flex flex-1 flex-col">
               <label className="text-b-md font-semibold text-dark-200">Number of Mines</label>
-              <div className="mt-4 relative">
-                <select
+              <div className="mt-4">
+                <MinesSelect
                   value={numberOfMines}
-                  onChange={(e) => onNumberOfMinesChange(Number(e.target.value))}
+                  onChange={onNumberOfMinesChange}
                   disabled={controlsDisabled}
-                  className="h-[48px] w-full appearance-none rounded-8 bg-dark-600 px-[12px] pr-[36px] text-h-sm font-semibold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled):hover]:outline-dark-400 [&:not(:disabled):focus]:outline-dark-400"
-                >
-                  {MINES_OPTIONS.map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-dark-300">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+                />
               </div>
             </div>
             <div className="flex flex-1 flex-col">
@@ -119,7 +169,7 @@ export const MinesControls = memo(function MinesControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onWin: 'reset' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ml-1 ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ml-1 ${
                   autoConfig.onWin === 'reset'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -131,7 +181,7 @@ export const MinesControls = memo(function MinesControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onWin: 'increase' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ${
                   autoConfig.onWin === 'increase'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -161,7 +211,7 @@ export const MinesControls = memo(function MinesControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onLoss: 'reset' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ml-1 ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ml-1 ${
                   autoConfig.onLoss === 'reset'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -173,7 +223,7 @@ export const MinesControls = memo(function MinesControls({
                 type="button"
                 onClick={() => onAutoConfigChange({ onLoss: 'increase' })}
                 disabled={controlsDisabled}
-                className={`flex items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-8 py-[8px] px-[10px] text-b-sm font-bold transition-all disabled:cursor-not-allowed ${
                   autoConfig.onLoss === 'increase'
                     ? 'bg-blue-600 text-light-000'
                     : 'text-dark-200 hover:text-light-000'
@@ -237,24 +287,12 @@ export const MinesControls = memo(function MinesControls({
         /* Manual mode - just Number of Mines */
         <div className="mb-16">
           <label className="text-b-md font-semibold text-dark-200">Number of Mines</label>
-          <div className="mt-4 relative">
-            <select
+          <div className="mt-4">
+            <MinesSelect
               value={numberOfMines}
-              onChange={(e) => onNumberOfMinesChange(Number(e.target.value))}
+              onChange={onNumberOfMinesChange}
               disabled={controlsDisabled}
-              className="h-[48px] w-full appearance-none rounded-8 bg-dark-600 px-[12px] pr-[36px] text-h-sm font-semibold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled):hover]:outline-dark-400 [&:not(:disabled):focus]:outline-dark-400"
-            >
-              {MINES_OPTIONS.map((n) => (
-                <option key={n} value={n}>
-                  {n}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-dark-300">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
+            />
           </div>
         </div>
       )}
@@ -281,7 +319,7 @@ export const MinesControls = memo(function MinesControls({
             <button
               type="button"
               onClick={onPickRandomClick}
-              className="w-full h-[48px] px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all bg-dark-400 text-light-000 hover:bg-dark-300 active:bg-dark-300 flex items-center justify-center"
+              className="w-full h-[48px] cursor-pointer px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all bg-dark-400 text-light-000 hover:bg-dark-300 active:bg-dark-300 flex items-center justify-center"
             >
               Pick Random Tile
             </button>
@@ -291,7 +329,7 @@ export const MinesControls = memo(function MinesControls({
               type="button"
               onClick={onCashoutClick}
               disabled={!canCashout}
-              className={`w-full h-[48px] px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all flex items-center justify-center gap-8 disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`w-full h-[48px] cursor-pointer px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all flex items-center justify-center gap-8 disabled:cursor-not-allowed disabled:opacity-50 ${
                 canCashout
                   ? 'bg-blue-500 text-light-000 hover:bg-blue-400 active:scale-95'
                   : 'bg-dark-400 text-light-000'
@@ -315,7 +353,7 @@ export const MinesControls = memo(function MinesControls({
               ? isAutoPlaying
                 ? 'Stop Autobet'
                 : 'Start Autobet'
-              : 'Bet'}
+              : 'Start Game'}
           </button>
         )}
       </div>

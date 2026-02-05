@@ -6,7 +6,7 @@ interface ActionButtonProps {
   onClick: () => void;
   isLoading?: boolean;
   disabled?: boolean;
-  variant?: 'primary' | 'success' | 'secondary';
+  variant?: 'primary' | 'success' | 'secondary' | 'confirm';
   children: React.ReactNode;
 }
 
@@ -18,9 +18,10 @@ export const ActionButton = memo(function ActionButton({
   children,
 }: ActionButtonProps) {
   const variantClasses = {
-    primary: 'bg-blue-600 hover:bg-blue-500',
-    success: 'bg-green-600 hover:bg-green-500',
-    secondary: 'bg-dark-400 hover:bg-dark-300',
+    primary: 'bg-blue-600 hover:bg-blue-500 text-light-000',
+    success: 'bg-green-600 hover:bg-green-500 text-light-000',
+    secondary: 'bg-dark-400 hover:bg-dark-300 text-light-000',
+    confirm: 'bg-green-600 hover:bg-green-500 text-dark-900',
   };
 
   return (
@@ -28,7 +29,7 @@ export const ActionButton = memo(function ActionButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`flex h-[48px] w-full items-center justify-center rounded-8 px-[24px] py-8 text-b-lg font-bold text-light-000 transition-transform duration-75 active:scale-95 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50 ${variantClasses[variant]}`}
+      className={`flex h-[48px] w-full items-center justify-center rounded-8 px-[24px] py-8 text-b-lg font-bold transition-transform duration-75 active:scale-95 cursor-pointer disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50 ${variantClasses[variant]}`}
     >
       <span className="flex items-center justify-center gap-8">
         {isLoading && (

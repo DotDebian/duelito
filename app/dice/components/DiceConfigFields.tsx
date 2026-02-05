@@ -93,7 +93,7 @@ export const DiceConfigFields = memo(function DiceConfigFields({
             type="button"
             onClick={resetMultiplier}
             disabled={disabled}
-            className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-8 bg-dark-400 text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="flex h-[32px] w-[32px] shrink-0 cursor-pointer items-center justify-center rounded-8 bg-dark-400 text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -125,7 +125,7 @@ export const DiceConfigFields = memo(function DiceConfigFields({
             type="button"
             onClick={onToggleRollMode}
             disabled={disabled}
-            className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-8 bg-dark-400 text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="flex h-[32px] w-[32px] shrink-0 cursor-pointer items-center justify-center rounded-8 bg-dark-400 text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 4h12M1 4l3-3M1 4l3 3M13 10H1M13 10l-3-3M13 10l-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

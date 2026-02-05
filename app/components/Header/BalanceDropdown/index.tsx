@@ -78,7 +78,7 @@ export function BalanceDropdown({ isOpen }: BalanceDropdownProps) {
 
       {/* Wallet Settings */}
       <div className="p-16">
-        <button className="flex h-[22px] w-full items-center justify-center gap-4 text-b-md font-semibold text-dark-100 transition-all hover:text-light-000">
+        <button className="flex h-[22px] w-full cursor-pointer items-center justify-center gap-4 text-b-md font-semibold text-dark-100 transition-all hover:text-light-000">
           <div className="h-16 w-16">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14" className="h-full w-full">
               <path fillRule="evenodd" d="M.583 4.273c0-1.716 1.461-3.106 3.264-3.106h6.061c.257 0 .466.198.466.443v1.241H3.712a.57.57 0 0 0-.583.555c0 .306.261.555.583.555h7.072q.028 0 .055-.003h.2c.37 0 .726.14.988.39.263.25.41.588.41.941v.814h-2.75c-.769 0-1.632.554-1.632 1.503v1.579c0 .95.863 1.504 1.632 1.504h2.75v.813a1.3 1.3 0 0 1-.41.941c-.262.25-.618.39-.989.39H1.982c-.371 0-.727-.14-.989-.39a1.3 1.3 0 0 1-.41-.94zm9.104 2.939h3.264c.257 0 .466.177.466.394v1.579c0 .218-.21.395-.466.395H9.687c-.258 0-.466-.177-.466-.395V7.606c0-.217.208-.394.466-.394" clipRule="evenodd" />

@@ -48,7 +48,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <button className="transition-colors duration-200 hover:text-white">
+                <button className="cursor-pointer transition-colors duration-200 hover:text-white">
                   Live Support
                 </button>
               </li>

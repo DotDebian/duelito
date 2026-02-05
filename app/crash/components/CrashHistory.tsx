@@ -11,7 +11,7 @@ interface CrashHistoryProps {
 const ChartButton = () => (
   <button
     type="button"
-    className="flex h-[32px] items-center justify-center rounded-8 bg-dark-600 px-[10px] text-dark-200 transition-all hover:bg-dark-500 hover:text-light-000"
+    className="flex h-[32px] cursor-pointer items-center justify-center rounded-8 bg-dark-600 px-[10px] text-dark-200 transition-all hover:bg-dark-500 hover:text-light-000"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

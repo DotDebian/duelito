@@ -7,12 +7,16 @@ interface BetAmountInputProps {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  bgClassName?: string;
+  onMax?: () => void;
 }
 
 export const BetAmountInput = memo(function BetAmountInput({
   value,
   onChange,
   disabled = false,
+  bgClassName = 'bg-dark-600',
+  onMax,
 }: BetAmountInputProps) {
   const { balance } = useBalance();
 
@@ -23,7 +27,7 @@ export const BetAmountInput = memo(function BetAmountInput({
         <span className="ml-auto max-w-[50%] truncate">${balance.toFixed(2)}</span>
       </div>
       <div
-        className={`group flex h-[48px] items-center gap-4 rounded-8 bg-dark-900 px-[12px] py-8 text-b-md font-semibold text-dark-300 outline outline-2 outline-offset-[-2px] outline-transparent transition-all [&_input]:text-h-sm [&_input]:font-semibold ${disabled ? 'opacity-50 pointer-events-none' : 'hover:outline-dark-400 focus-within:outline-dark-400 active:outline-dark-400 active:text-light-000 focus:text-light-000'}`}
+        className={`group flex h-[48px] items-center gap-4 rounded-8 ${bgClassName} px-[12px] py-8 text-b-md font-semibold text-dark-300 outline outline-2 outline-offset-[-2px] outline-transparent transition-all [&_input]:text-h-sm [&_input]:font-semibold ${disabled ? 'opacity-50 pointer-events-none' : 'hover:outline-dark-400 focus-within:outline-dark-400 active:outline-dark-400 active:text-light-000 focus:text-light-000'}`}
       >
         <div className="size-16 shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" className="h-full w-full">
@@ -37,7 +41,21 @@ export const BetAmountInput = memo(function BetAmountInput({
           inputMode="decimal"
           placeholder="0.00"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            let val = e.target.value.replace(',', '.');
+            // Only allow digits and one decimal point
+            val = val.replace(/[^\d.]/g, '');
+            // Remove extra decimal points (keep only first)
+            const parts = val.split('.');
+            if (parts.length > 2) {
+              val = parts[0] + '.' + parts.slice(1).join('');
+            }
+            // Limit to 2 decimal places
+            if (parts.length === 2 && parts[1].length > 2) {
+              val = parts[0] + '.' + parts[1].slice(0, 2);
+            }
+            onChange(val);
+          }}
           disabled={disabled}
           className="w-full bg-transparent text-h-sm font-semibold text-light-000 outline-none placeholder:text-dark-300 disabled:cursor-not-allowed"
         />
@@ -46,7 +64,7 @@ export const BetAmountInput = memo(function BetAmountInput({
             type="button"
             onClick={() => onChange((parseFloat(value) / 2).toFixed(2))}
             disabled={disabled}
-            className="flex h-[32px] min-w-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="flex h-[32px] min-w-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold text-light-000 transition-all cursor-pointer disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             ½
           </button>
@@ -54,15 +72,18 @@ export const BetAmountInput = memo(function BetAmountInput({
             type="button"
             onClick={() => onChange((parseFloat(value) * 2).toFixed(2))}
             disabled={disabled}
-            className="flex h-[32px] min-w-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="flex h-[32px] min-w-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold text-light-000 transition-all cursor-pointer disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             2x
           </button>
           <button
             type="button"
-            onClick={() => onChange(balance.toFixed(2))}
+            onClick={() => {
+              onChange(balance.toFixed(2));
+              onMax?.();
+            }}
             disabled={disabled}
-            className="flex h-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold uppercase text-light-000 transition-all disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
+            className="flex h-[32px] items-center justify-center rounded-8 bg-dark-400 px-[10px] text-b-sm font-semibold uppercase text-light-000 transition-all cursor-pointer disabled:cursor-not-allowed [&:not(:disabled):hover]:bg-dark-300"
           >
             Max
           </button>

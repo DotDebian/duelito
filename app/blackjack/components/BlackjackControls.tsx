@@ -50,7 +50,7 @@ export const BlackjackControls = memo(function BlackjackControls({
   isLoading,
 }: BlackjackControlsProps) {
   const buttonBase =
-    'touch-manipulation outline-none h-full px-0 bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 w-full text-b-lg font-bold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed';
+    'touch-manipulation outline-none cursor-pointer h-full px-0 bg-dark-400 text-light-000 hover:bg-dark-300 hover:text-light-000 active:bg-dark-300 active:text-light-000 disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50 w-full text-b-lg font-bold touch-manipulation flex flex-row items-center justify-center rounded-8 py-8 transition-all relative disabled:cursor-not-allowed';
 
   return (
     <div className="flex w-full">

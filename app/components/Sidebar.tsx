@@ -24,7 +24,7 @@ export function Sidebar() {
       {/* Toggle button for mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed z-50 flex h-10 w-10 items-center justify-center rounded-full bg-dark-600 text-dark-200 hover:text-light-000 lg:hidden ${
+        className={`fixed z-50 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-dark-600 text-dark-200 hover:text-light-000 lg:hidden ${
           isOpen ? 'left-[25rem] top-16' : 'left-2 top-16'
         }`}
       >
@@ -106,7 +106,7 @@ export function Sidebar() {
           {/* Close button (desktop) */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute right-[16px] top-[13px] flex h-[32px] w-[32px] items-center justify-center rounded-[8px] bg-dark-600 px-[10px] py-2 text-dark-200 opacity-0 outline-none transition-all duration-300 hover:bg-dark-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 group-hover/chat:opacity-100 lg:right-[12px] lg:top-[11px]"
+            className="absolute right-[16px] top-[13px] flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-[8px] bg-dark-600 px-[10px] py-2 text-dark-200 opacity-0 outline-none transition-all duration-300 hover:bg-dark-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 group-hover/chat:opacity-100 lg:right-[12px] lg:top-[11px]"
           >
             <span className="flex w-full flex-row items-center justify-center gap-1">
               <div className="h-[16px] w-[16px]">
@@ -124,7 +124,7 @@ export function Sidebar() {
         <button
           onClick={() => setIsOpen(true)}
           type="button"
-          className="fixed bottom-16 left-16 z-30 hidden h-[56px] w-[56px] flex-row items-center justify-center rounded-[8px] bg-dark-600 p-0 text-dark-200 shadow-lg transition-all duration-200 hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 lg:flex"
+          className="fixed bottom-16 left-16 z-30 hidden h-[56px] w-[56px] cursor-pointer flex-row items-center justify-center rounded-[8px] bg-dark-600 p-0 text-dark-200 shadow-lg transition-all duration-200 hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 lg:flex"
         >
           <div className="h-[16px] w-[16px] text-dark-200">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14" className="h-full w-full">
@@ -193,7 +193,7 @@ function ChatMessageItem({ message }: { message: ChatMessage }) {
 
         {/* Reply button on hover */}
         <div className="z-1 absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-2 rounded bg-dark-900/80 p-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-          <button className="flex h-6 w-6 items-center justify-center rounded bg-transparent p-0 text-light-000 transition-colors duration-150 hover:text-dark-200">
+          <button className="flex h-6 w-6 cursor-pointer items-center justify-center rounded bg-transparent p-0 text-light-000 transition-colors duration-150 hover:text-dark-200">
             <div className="h-3.5 w-3.5">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10" className="h-full w-full">
                 <path

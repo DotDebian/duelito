@@ -95,7 +95,7 @@ export function WalletDepositTab() {
               <button
                 type="button"
                 onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-                className="flex h-[40px] w-full items-center justify-between rounded-8 bg-dark-700 px-[12px] text-b-md font-bold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all hover:bg-dark-400 hover:outline-dark-400"
+                className="flex h-[40px] w-full cursor-pointer items-center justify-between rounded-8 bg-dark-700 px-[12px] text-b-md font-bold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all hover:bg-dark-400 hover:outline-dark-400"
               >
                 <div className="flex w-full justify-between">
                   <div className="flex items-center gap-4">
@@ -129,7 +129,7 @@ export function WalletDepositTab() {
                       setSelectedNetwork(networks[currency.id]?.[0]?.id || 'ethereum');
                       setIsCurrencyOpen(false);
                     }}
-                    className="flex w-full items-center justify-between px-[12px] py-8 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-400"
+                    className="flex w-full cursor-pointer items-center justify-between px-[12px] py-8 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-400"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center">
@@ -155,7 +155,7 @@ export function WalletDepositTab() {
               <button
                 type="button"
                 onClick={() => setIsNetworkOpen(!isNetworkOpen)}
-                className="flex h-[40px] w-full items-center justify-between rounded-8 bg-dark-700 px-[12px] text-b-md font-bold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all hover:bg-dark-400 hover:outline-dark-400"
+                className="flex h-[40px] w-full cursor-pointer items-center justify-between rounded-8 bg-dark-700 px-[12px] text-b-md font-bold text-light-000 outline outline-2 outline-offset-[-2px] outline-transparent transition-all hover:bg-dark-400 hover:outline-dark-400"
               >
                 <div className="flex w-full justify-between">
                   <div className="flex items-center gap-4">
@@ -183,7 +183,7 @@ export function WalletDepositTab() {
                       setSelectedNetwork(network.id);
                       setIsNetworkOpen(false);
                     }}
-                    className="flex w-full items-center px-[12px] py-8 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-400"
+                    className="flex w-full cursor-pointer items-center px-[12px] py-8 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-400"
                   >
                     {network.name}
                   </button>

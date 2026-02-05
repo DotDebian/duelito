@@ -98,7 +98,7 @@ export function Header() {
               <button
                 ref={buttonRef}
                 onClick={handleClick}
-                className={`flex h-[40px] items-center gap-x-8 rounded-8 bg-transparent px-16 py-8 text-b-lg font-bold transition-all duration-150 md:h-[48px] md:px-16 ${
+                className={`flex h-[40px] cursor-pointer items-center gap-x-8 rounded-8 bg-transparent px-16 py-8 text-b-lg font-bold transition-all duration-150 md:h-[48px] md:px-16 ${
                   isOriginalsOpen || isOnGamePage ? 'text-light-000' : 'text-dark-200 hover:text-light-000'
                 }`}
               >
@@ -143,7 +143,7 @@ export function Header() {
           {/* Login Button */}
           <button
             onClick={() => openAuthModal('login')}
-            className="flex h-[40px] flex-row items-center justify-center rounded-8 bg-dark-600 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-500 md:h-[48px] md:px-16 md:text-b-lg md:font-bold"
+            className="flex h-[40px] cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-600 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-500 md:h-[48px] md:px-16 md:text-b-lg md:font-bold"
           >
             Login
           </button>
@@ -151,7 +151,7 @@ export function Header() {
           {/* Register Button */}
           <button
             onClick={() => openAuthModal('register')}
-            className="flex h-[40px] flex-row items-center justify-center rounded-8 bg-blue-600 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-blue-500 md:h-[48px] md:px-16 md:text-b-lg md:font-bold"
+            className="flex h-[40px] cursor-pointer flex-row items-center justify-center rounded-8 bg-blue-600 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-blue-500 md:h-[48px] md:px-16 md:text-b-lg md:font-bold"
           >
             Register
           </button>
@@ -160,7 +160,7 @@ export function Header() {
           <div ref={balanceDropdownRef} className="relative">
             <button
               onClick={() => setIsBalanceDropdownOpen(!isBalanceDropdownOpen)}
-              className="ml-8 flex h-[40px] items-center rounded-8 bg-dark-500 px-[12px] text-b-md font-semibold transition-all hover:bg-dark-400 disabled:opacity-50 disabled:hover:bg-dark-500 md:h-[48px] md:px-16"
+              className="ml-8 flex h-[40px] cursor-pointer items-center rounded-8 bg-dark-500 px-[12px] text-b-md font-semibold transition-all hover:bg-dark-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-dark-500 md:h-[48px] md:px-16"
             >
               <div className="relative top-[1px] flex items-center justify-center overflow-hidden transition-all duration-300" style={{ minWidth: '57px' }}>
                 <div className="text-nowrap break-keep leading-[1]">
@@ -186,7 +186,7 @@ export function Header() {
           {/* Wallet Button */}
           <button
             onClick={() => setIsWalletModalOpen(true)}
-            className="relative flex h-[48px] flex-row items-center justify-center rounded-8 bg-blue-600 px-[24px] py-8 text-b-lg font-bold text-light-000 outline-none transition-all hover:bg-blue-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50"
+            className="relative flex h-[48px] cursor-pointer flex-row items-center justify-center rounded-8 bg-blue-600 px-[24px] py-8 text-b-lg font-bold text-light-000 outline-none transition-all hover:bg-blue-500 hover:text-light-000 active:bg-blue-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:text-light-000 disabled:opacity-50"
           >
             <span className="flex w-full flex-row items-center justify-center gap-8">
               <div className="h-16 w-16">
@@ -200,7 +200,7 @@ export function Header() {
 
           {/* Profile Button */}
           <Link href="/account" className="flex-shrink-0">
-            <button className="relative flex h-[48px] flex-row items-center justify-center rounded-8 bg-dark-600 px-[8px] py-8 text-b-lg font-bold text-dark-200 outline-none transition-all hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-600 disabled:text-light-000 disabled:opacity-50 md:px-[12px]">
+            <button className="relative flex h-[48px] cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-600 px-[8px] py-8 text-b-lg font-bold text-dark-200 outline-none transition-all hover:bg-dark-500 hover:text-light-000 active:bg-dark-500 active:text-light-000 disabled:cursor-not-allowed disabled:bg-dark-600 disabled:text-light-000 disabled:opacity-50 md:px-[12px]">
               <span className="flex w-full flex-row items-center justify-center gap-8">
                 <div className="relative h-[24px] w-[24px] overflow-hidden rounded-full">
                   <img

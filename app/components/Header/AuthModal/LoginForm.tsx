@@ -37,7 +37,7 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="group absolute inset-y-0 right-4 my-auto flex h-[32px] items-center justify-center rounded-8 px-[10px] text-dark-200 transition-all hover:bg-dark-600 hover:text-light-000"
+            className="group absolute inset-y-0 right-4 my-auto flex h-[32px] cursor-pointer items-center justify-center rounded-8 px-[10px] text-dark-200 transition-all hover:bg-dark-600 hover:text-light-000"
           >
             <div className="h-16 w-16">
               <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 17" className="h-full w-full">
@@ -54,7 +54,7 @@ export function LoginForm() {
       {/* Submit */}
       <button
         type="submit"
-        className="flex h-[48px] w-full items-center justify-center rounded-8 bg-blue-600 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-blue-500"
+        className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-8 bg-blue-600 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-blue-500"
       >
         Log in
       </button>
@@ -70,7 +70,7 @@ export function LoginForm() {
       <div className="flex gap-16">
         <button
           type="button"
-          className="flex h-[48px] w-full items-center justify-center gap-8 rounded-8 bg-dark-400 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-dark-300"
+          className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-8 rounded-8 bg-dark-400 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-dark-300"
         >
           <div className="h-16 w-16">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 14" className="h-full w-full">
@@ -81,7 +81,7 @@ export function LoginForm() {
         </button>
         <button
           type="button"
-          className="flex h-[48px] w-full items-center justify-center gap-8 rounded-8 bg-dark-400 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-dark-300"
+          className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-8 rounded-8 bg-dark-400 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-dark-300"
         >
           <div className="h-16 w-16">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 15" className="h-full w-full">

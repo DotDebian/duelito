@@ -29,7 +29,7 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="flex flex-col gap-24 min-h-[calc(100dvh-80px)]">
+    <div className="flex flex-col gap-24 min-h-[calc(100dvh-80px)] p-16 sm:p-32">
       {/* Settings Header */}
       <h2 className="flex items-center gap-8 text-h-md lg:text-h-lg">
         <div className="h-16 w-16 text-dark-200 lg:h-[20px] lg:w-[20px]">
@@ -109,7 +109,7 @@ function AccountTab() {
               </div>
               <h4 className="text-h-sm text-light-000">DotDebian</h4>
             </div>
-            <button className="flex h-[40px] flex-row items-center justify-center gap-4 rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300">
+            <button className="flex h-[40px] cursor-pointer flex-row items-center justify-center gap-4 rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300">
               <div className="h-16 w-16 md:hidden">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +148,7 @@ function AccountTab() {
               </div>
               <div className="flex h-[40px] grow items-center justify-between">
                 Password
-                <button className="flex h-[40px] flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300 md:self-start">
+                <button className="flex h-[40px] cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300 md:self-start">
                   Add Password
                 </button>
               </div>
@@ -170,7 +170,7 @@ function AccountTab() {
                 </div>
                 Two Factor Authentication
               </div>
-              <button className="flex h-[40px] w-full flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300 md:w-auto md:self-start">
+              <button className="flex h-[40px] w-full cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-semibold text-light-000 transition-all hover:bg-dark-300 md:w-auto md:self-start">
                 Enable
               </button>
             </h3>
@@ -216,10 +216,10 @@ function AccountTab() {
                 <span className="text-b-lg font-bold">Logout</span>
               </div>
               <div className="flex gap-8 md:gap-16">
-                <button className="flex h-[40px] w-full flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-bold text-light-000 transition-all hover:bg-dark-300 md:w-auto">
+                <button className="flex h-[40px] w-full cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-bold text-light-000 transition-all hover:bg-dark-300 md:w-auto">
                   This Device
                 </button>
-                <button className="flex h-[40px] w-full flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-bold text-light-000 transition-all hover:bg-dark-300 md:w-auto">
+                <button className="flex h-[40px] w-full cursor-pointer flex-row items-center justify-center rounded-8 bg-dark-400 px-12 text-b-md font-bold text-light-000 transition-all hover:bg-dark-300 md:w-auto">
                   All Devices
                 </button>
               </div>
@@ -312,7 +312,7 @@ function AffiliatesTab() {
             <button
               type="button"
               onClick={handleButtonClick}
-              className={`flex h-[40px] flex-row items-center justify-center whitespace-nowrap rounded-8 px-12 text-b-md font-semibold text-light-000 transition-all ${
+              className={`flex h-[40px] cursor-pointer flex-row items-center justify-center whitespace-nowrap rounded-8 px-12 text-b-md font-semibold text-light-000 transition-all ${
                 isEditing
                   ? 'bg-blue-500 hover:bg-blue-400'
                   : 'bg-dark-400 hover:bg-dark-300'
