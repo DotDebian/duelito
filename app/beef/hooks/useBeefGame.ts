@@ -242,7 +242,7 @@ export function useBeefGame() {
   // Start auto play
   const startAutoPlay = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0) return;
+    if (bet > balance || bet < 0) return;
 
     initialBetRef.current = bet;
     isStoppingRef.current = false;

@@ -38,7 +38,7 @@ export function useBlackjackGame() {
 
   const deal = useCallback(async () => {
     const bet = parseFloat(betAmount) || 0;
-    if (bet <= 0 || bet > balance) return;
+    if (bet < 0 || bet > balance) return;
 
     // Deduct bet from balance
     subtractBalance(bet);

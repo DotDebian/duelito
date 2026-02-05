@@ -53,7 +53,7 @@ export function usePlinkoGame() {
   // Deduct bet when dropping a ball
   const deductBet = useCallback(() => {
     const bet = parseFloat(betAmount) || 0;
-    if (bet <= 0 || bet > balance) return false;
+    if (bet < 0 || bet > balance) return false;
     subtractBalance(bet);
     return true;
   }, [betAmount, balance, subtractBalance]);
@@ -61,7 +61,7 @@ export function usePlinkoGame() {
   // Check if can bet
   const canBet = useCallback(() => {
     const bet = parseFloat(betAmount) || 0;
-    return bet > 0 && bet <= balance;
+    return bet >= 0 && bet <= balance;
   }, [betAmount, balance]);
 
   const toggleAutoPlay = useCallback(() => {

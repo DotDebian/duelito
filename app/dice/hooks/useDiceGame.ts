@@ -121,7 +121,7 @@ export function useDiceGame() {
   // Single roll (manual mode)
   const roll = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0) return;
+    if (bet > balance || bet < 0) return;
 
     // Deduct bet amount immediately
     subtractBalance(bet);
@@ -177,7 +177,7 @@ export function useDiceGame() {
   // Start auto play
   const startAutoPlay = useCallback(() => {
     const bet = parseFloat(gameState.betAmount) || 0;
-    if (bet > balance || bet <= 0) return;
+    if (bet > balance || bet < 0) return;
 
     initialBetRef.current = bet;
     isStoppingRef.current = false;

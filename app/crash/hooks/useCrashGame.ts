@@ -182,7 +182,7 @@ export function useCrashGame() {
       const autoCashoutValue = parseFloat(autoCashout);
 
       // Check if we have enough balance
-      if (bet <= 0 || bet > balanceRef.current) {
+      if (bet < 0 || bet > balanceRef.current) {
         setGameState((prev) => ({ ...prev, queuedBet: null }));
         return;
       }
