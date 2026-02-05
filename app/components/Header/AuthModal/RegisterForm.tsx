@@ -132,7 +132,7 @@ export function RegisterForm() {
       <button
         type="submit"
         disabled={!acceptTos}
-        className="flex h-[48px] w-full items-center justify-center rounded-8 bg-blue-600 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50"
+        className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-8 bg-blue-600 px-24 text-b-lg font-bold text-light-000 transition-all hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50"
       >
         Create Account
       </button>

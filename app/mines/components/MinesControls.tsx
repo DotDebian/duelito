@@ -347,7 +347,7 @@ export const MinesControls = memo(function MinesControls({
             type="button"
             onClick={onBetClick}
             disabled={disabled}
-            className="w-full h-[48px] px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all bg-blue-600 text-light-000 hover:bg-blue-500 active:scale-95 disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50 flex items-center justify-center"
+            className="w-full h-[48px] px-[24px] text-b-lg font-bold rounded-8 py-8 transition-all bg-blue-600 text-light-000 hover:bg-blue-500 active:scale-95 cursor-pointer disabled:cursor-not-allowed disabled:bg-dark-400 disabled:opacity-50 flex items-center justify-center"
           >
             {betMode === 'auto'
               ? isAutoPlaying
