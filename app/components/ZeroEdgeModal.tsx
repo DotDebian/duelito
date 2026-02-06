@@ -10,6 +10,16 @@ interface ZeroEdgeModalProps {
 export function ZeroEdgeModal({ isOpen, onClose }: ZeroEdgeModalProps) {
   const [timeRemaining, setTimeRemaining] = useState({ hours: 23, minutes: 41, seconds: 21 });
 
+  // Close on Escape
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   // Countdown timer
   useEffect(() => {
     if (!isOpen) return;

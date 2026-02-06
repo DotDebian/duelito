@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 // Icons
 const ShieldIcon = () => (
@@ -53,7 +53,7 @@ function CopyableField({ label, value }: { label: string; value: string }) {
       <div className="w-full">
         <div className="flex h-[44px] items-center justify-between gap-[6px] rounded-8 bg-dark-700 px-[12px] text-b-md mt-4">
           <p
-            className="font-semibold overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-dark-300"
+            className="min-w-0 flex-1 font-semibold overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer text-dark-300"
             onClick={handleCopy}
           >
             {value}
@@ -102,6 +102,15 @@ export function ProvablyFairModal({ isOpen, onClose, gameName = 'dice' }: Provab
   const nextServerSeedHashed = '024b32451aa505aafa11187132664426f72f17696abc2352f6ba1c8951efadba';
   const [nonce, setNonce] = useState(373);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   const handleRotateSeed = useCallback(() => {
     setClientSeed(newClientSeed);
     setNewClientSeed(generateRandomSeed());
@@ -112,21 +121,14 @@ export function ProvablyFairModal({ isOpen, onClose, gameName = 'dice' }: Provab
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className="pointer-events-auto fixed inset-0 bg-dark-900/90"
-        style={{ zIndex: 102 }}
-        onClick={onClose}
-      />
-
-      {/* Drawer Modal */}
+      {/* Modal */}
       <div
         className="fixed inset-0 m-auto flex items-center justify-center transition-all duration-300"
-        style={{ zIndex: 103 }}
+        style={{ zIndex: 104 }}
       >
-        <div className="absolute inset-0" onClick={onClose} />
+        <div className="absolute inset-0 bg-dark-900/90" onClick={onClose} />
         <div
-          className="absolute bottom-0 rounded-t-12 max-h-[90dvh] w-full flex flex-col z-10 touch-none bg-dark-500"
+          className="relative rounded-12 w-[440px] flex flex-col z-10 touch-none bg-dark-500"
           style={{
             maxWidth: 'unset',
             transform: 'translateY(0%)',
@@ -135,8 +137,6 @@ export function ProvablyFairModal({ isOpen, onClose, gameName = 'dice' }: Provab
             userSelect: 'none',
           }}
         >
-          {/* Drag handle */}
-          <div className="absolute left-1/2 top-[12px] h-[6px] w-[12%] -translate-x-1/2 rounded-12 bg-dark-300" />
 
           <div className="flex h-full flex-col overflow-hidden rounded-12">
             {/* Header */}
@@ -160,7 +160,7 @@ export function ProvablyFairModal({ isOpen, onClose, gameName = 'dice' }: Provab
             </div>
 
             {/* Body */}
-            <div className="scrollbar flex flex-1 flex-col justify-between overflow-y-auto overflow-x-hidden px-16 pb-16 pt-0 sm:px-32 sm:pb-32">
+            <div className="scrollbar overflow-y-overlay flex flex-1 flex-col justify-between overflow-x-hidden px-16 pb-16 pt-0 sm:px-32 sm:pb-32">
               <div>
                 {/* Active seeds section */}
                 <div className="flex flex-col gap-16 text-dark-200">

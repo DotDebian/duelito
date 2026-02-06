@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 
@@ -20,6 +21,15 @@ const getAuthTabOffset = (tab: 'login' | 'register') => {
 };
 
 export function AuthModal({ isOpen, onClose, activeTab, onTabChange }: AuthModalProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (

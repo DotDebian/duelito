@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { WalletDepositTab } from './WalletDepositTab';
 import { WalletWithdrawTab } from './WalletWithdrawTab';
 import { WalletBuyCryptoTab } from './WalletBuyCryptoTab';
@@ -33,6 +34,15 @@ const getWalletTabOffset = (tab: WalletTab) => {
 };
 
 export function WalletModal({ isOpen, onClose, activeTab, onTabChange }: WalletModalProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
